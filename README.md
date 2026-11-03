@@ -2,9 +2,9 @@
 
 A small English-language remote MCP server for checking the technical quality of professional profile and job-application photos. It turns measurable image issues into prioritized advice, without judging the person pictured. MIT licensed; no account, API key or paid analysis API.
 
-## Status: not deployed, not submitted
+## Status: live; submission preparation only
 
-Proposed production endpoint: **https://mcp.profilfoto-ki.de/mcp**. This URL is NOT set up. The existing site is on Netlify; DNS, subdomain and routing are to be decided by Safak. `server.json` prepares `de.profilfoto-ki/headshot-photo-check` for domain authentication in the official MCP Registry; it has NOT been published. No remote or repository has been created.
+The operator reports main v0.1.1 live at **https://mcp.profilfoto-ki.de/mcp**, via the Netlify proxy site `mcp-profilfoto-proxy` in front of the Cloudflare Worker. This branch prepares v0.1.2; it has not been deployed or submitted. The GitHub repository remains private. `server.json` proposes `de.profilfoto-ki/headshot-check`; no Registry publication was performed. See [submission materials and remaining operator actions](submission/README.md).
 
 ## What it checks
 
@@ -15,7 +15,7 @@ Two read-only tools:
 | `check_headshot_photo` | Exactly one `image_url` (public HTTPS) or `image_base64` (with/without data prefix); optional `target`: `linkedin`, `xing`, `application`, `all` (default) | Score 0–100, verdict, criteria with status/value/threshold/tip, per-target crop recommendations, prioritized tips, mode and coverage notes |
 | `get_headshot_photo_requirements` | Optional `target` with the same enum/default | Static recommendations, dimensions, formats and checklist |
 
-Full mode checks resolution, aspect ratio, size/format, mean luminance and clipping, luminance contrast/dynamic range, overall color balance, experimental sharpness and border-background structure. It compares border and center edge metrics. Face size/framing returns `not_checked`; no unreliable face or skin-tone guessing is used. It performs no biometric identification or attractiveness, identity, age, gender, ethnicity or other personal-attribute judgments. It does not generate or edit images.
+Full mode checks resolution, aspect ratio, size/format, mean luminance and clipping, luminance contrast/dynamic range, overall color balance, experimental sharpness and border-background structure. It compares border and center edge metrics. Face size/framing returns `not_checked`; no unreliable face or skin-tone guessing is used. It performs no biometric identification or attractiveness, identity, age, gender, ethnicity or other personal-attribute judgments. It does not generate images, video or audio or return edited images; internal resizing supports analysis.
 
 Reference logic and translated tips come from the existing read-only application checker. [Port details](docs/reference-port.md) document exact thresholds and discrepancies between its prose and code. LinkedIn/XING square crops and application portrait crops are **recommendations**, not official platform specifications. No official platform upload-size numbers are claimed. Added sharpness thresholds and service size limits are also **recommendations/service limits**, not platform rules.
 
@@ -42,9 +42,9 @@ Illustrative output excerpt (not a measured person/photo):
 
 The actual result includes all nine criteria, coverage notes, crop recommendations and prioritized tips. To ask without uploading: “What crop and resolution should I prepare for XING?” calls the requirements tool.
 
-## Connect after an operator deployment
+## Connect to the existing endpoint
 
-All snippets below use the proposed, currently inactive endpoint. This is a stateless Streamable HTTP service with JSON responses and no authentication. Hosted assistants cannot reach your loopback development URL.
+All snippets below use the existing endpoint; this branch’s v0.1.2 changes require a later approved deployment. This is a stateless Streamable HTTP service with JSON responses and no authentication. Hosted assistants cannot reach your loopback development URL.
 
 Claude: Settings → Connectors → Add custom connector → enter `https://mcp.profilfoto-ki.de/mcp`. Availability and menu names depend on account/workspace configuration. Claude Code:
 
@@ -52,26 +52,7 @@ Claude: Settings → Connectors → Add custom connector → enter `https://mcp.
 claude mcp add --transport http headshot-photo-check https://mcp.profilfoto-ki.de/mcp
 ```
 
-ChatGPT: enable Developer mode where available, then add a custom connector/custom MCP server with that URL and no authentication. Workspace permissions may apply; current UI may label this Plugins → Add custom MCP server. See [official OpenAI instructions](https://developers.openai.com/api/docs/guides/custom-mcp-server). These are setup instructions, not a claim of directory availability.
-
-Codex: the locally installed `codex mcp add --help` confirms `--url` for Streamable HTTP:
-
-```sh
-codex mcp add headshot-photo-check --url https://mcp.profilfoto-ki.de/mcp
-```
-
-Equivalent `~/.codex/config.toml`:
-
-```toml
-[mcp_servers.headshot_photo_check]
-url = "https://mcp.profilfoto-ki.de/mcp"
-```
-
-Cursor `.cursor/mcp.json`:
-
-```json
-{"mcpServers":{"headshot-photo-check":{"url":"https://mcp.profilfoto-ki.de/mcp"}}}
-```
+ChatGPT/Claude setup and verification notes are maintained in [submission/README.md](submission/README.md), with the current [OpenAI submission guide](https://developers.openai.com/plugins/deploy/submission). Account and workspace permissions affect access. Directory availability is not claimed.
 
 ## Local development
 
@@ -113,8 +94,8 @@ Local benchmark numbers and methodology are in [BUILD-REPORT.md](BUILD-REPORT.md
 
 ## Privacy and operations
 
-Photos and URLs are analysed in server memory and not stored by the application. This differs from the browser-only reference: the remote service receives the photo. The image host receives URL fetches; Cloudflare processes hosting/network traffic. Only anonymous per-tool name/success/duration counters are logged. Transient hashed network addresses support rate limiting for up to 60 seconds and are not logged. Client/hosting retention policies still apply. See the [DRAFT privacy policy](docs/privacy-policy.md), [terms](docs/terms-of-service.md) and [support/security](docs/support.md). Contact details and log retention must be confirmed by the operator.
+Photos and URLs are processed in memory and not stored by the application. Cloudflare runs the Worker and configured Images binding; Netlify provides the front proxy. URL fetching reaches third-party hosts selected by the user. Tool-call logs contain event, tool, success and rounded duration. Binding diagnostics include dimensions and bounded, defensively redacted errors. Rate-limit hashes have a 60-second validity window but can persist in idle isolate memory until another request or disposal. Provider retention is separate and must be confirmed by the operator. See the maintained [privacy](submission/privacy.md), [terms](submission/terms.md) and [support](submission/support.md) texts. Operator placeholders require completion before publication.
 
 Optional Analytics Engine: after operator account/dataset setup, uncomment the `[[analytics_engine_datasets]]` block in wrangler.toml at the top level (outside `[vars]`), binding `ANALYTICS`, dataset `headshot_calls`. Calls are guarded by `if`/optional binding checks and send only `blobs=[tool, ok]`, `doubles=[ms]`; console counters remain the fallback. Review the current [Cloudflare Analytics Engine limits](https://developers.cloudflare.com/analytics/analytics-engine/limits/) and free-tier allowance before enabling; no account or billing setup was performed here.
 
-Before publication: confirm legal contacts/retention, publish the proposed HTTPS policy/support pages, decide DNS and deployment CPU budget, prepare domain proofs, configure global rate/egress controls and an external `/health` uptime monitor, run the [golden prompts](docs/openai-test-cases.md) in ChatGPT and Claude, record a demo video, and obtain Safak's approval for each deployment/submission. These are launch tasks, not completed actions. Review anonymous call analytics weekly for misrouting. [Listing draft](docs/listing.md), [changelog](CHANGELOG.md), [build report](BUILD-REPORT.md).
+Before publication: confirm legal contacts/retention, publish the proposed HTTPS policy/support pages, confirm infrastructure retention and deployment CPU budget, prepare domain proofs, configure global rate/egress controls and an external `/health` uptime monitor, run the [golden prompts](docs/openai-test-cases.md) in ChatGPT and Claude, record a demo video, and obtain Safak's approval for each deployment/submission. These are launch tasks, not completed actions. Review operational call analytics weekly for misrouting. [Listing draft](docs/listing.md), [changelog](CHANGELOG.md), [build report](BUILD-REPORT.md).

@@ -1,0 +1,138 @@
+{
+  "overall_score": 50,
+  "verdict": "Technical issues detected",
+  "improvement_tips": [
+    {
+      "priority": 1,
+      "criterion": "resolution",
+      "tip": "Too few pixels can look blurred or pixelated. Use the original camera file with at least 600 × 800 pixels."
+    },
+    {
+      "priority": 2,
+      "criterion": "brightness",
+      "tip": "Large areas are overexposed. Check direct sunlight or strong flash for blown highlights."
+    },
+    {
+      "priority": 3,
+      "criterion": "contrast",
+      "tip": "Low tonal depth can look hazy. Clean the camera lens and avoid backlighting."
+    },
+    {
+      "priority": 4,
+      "criterion": "sharpness",
+      "tip": "Inspect eyes and clothing edges at original size; use stable focus and avoid motion blur. Texture can inflate this heuristic; it cannot prove focus."
+    }
+  ],
+  "target": "linkedin",
+  "analysis_mode": "full",
+  "score_scope": "Equal-weight technical heuristic over checked criteria only; not a judgment of the person or a guarantee of acceptance.",
+  "criteria": [
+    {
+      "id": "resolution",
+      "label": "Resolution and print suitability",
+      "status": "fail",
+      "value": {
+        "width": 1,
+        "height": 1
+      },
+      "threshold": "pass: short >=1200, long >=1500; warn: short >=600, long >=750",
+      "tip": "Too few pixels can look blurred or pixelated. Use the original camera file with at least 600 × 800 pixels."
+    },
+    {
+      "id": "aspect_ratio",
+      "label": "Aspect ratio",
+      "status": "pass",
+      "value": 1,
+      "threshold": "portrait 3:4, 2:3, 4:5 ±0.045; square ±0.05",
+      "tip": "A classic portrait fits CV templates; a square suits professional networks and round or square frames."
+    },
+    {
+      "id": "file",
+      "label": "File size and format",
+      "status": "pass",
+      "value": {
+        "bytes": 68,
+        "format": "png"
+      },
+      "threshold": "service limit 8,000,000 bytes; pixel coverage depends on decoder or Images binding; no platform upload limit claimed",
+      "tip": "Keep an original copy and export JPEG or PNG within the destination upload limit."
+    },
+    {
+      "id": "brightness",
+      "label": "Brightness and exposure",
+      "status": "fail",
+      "value": {
+        "mean_luminance": 254.99999999999997,
+        "percent": 99.99999999999999,
+        "dark_clip_percent": 0,
+        "bright_clip_percent": 100
+      },
+      "threshold": "fail: mean <26% or >84%, dark clip >28%, bright clip >32%; warn: mean <35% or >76%, dark >16%, bright >20%",
+      "tip": "Large areas are overexposed. Check direct sunlight or strong flash for blown highlights."
+    },
+    {
+      "id": "contrast",
+      "label": "Contrast and dynamic range",
+      "status": "fail",
+      "value": {
+        "std_dev": 0,
+        "p95_minus_p5": 0
+      },
+      "threshold": "fail: std <22 or spread <70; warn: std <32 or spread <105 or std >84",
+      "tip": "Low tonal depth can look hazy. Clean the camera lens and avoid backlighting."
+    },
+    {
+      "id": "color_balance",
+      "label": "Color cast and white balance",
+      "status": "pass",
+      "value": {
+        "rgb_mean": [
+          128,
+          128,
+          128
+        ],
+        "max_channel_deviation": 0,
+        "red_minus_blue": 0
+      },
+      "threshold": "fail: red-blue >38 or max deviation >28; warn: red-blue >24 or <-16 or max deviation >19",
+      "tip": "Color channels are balanced without a strong artificial color cast."
+    },
+    {
+      "id": "background",
+      "label": "Background calmness at border",
+      "status": "pass",
+      "value": {
+        "unrest_index": 0,
+        "border_edge_mean": 0,
+        "border_luminance_std": 0,
+        "center_edge_mean": 0
+      },
+      "threshold": "pass <=4.5; warn <=10.5; otherwise fail",
+      "tip": "Few hard contrast edges at the border keep attention on the subject."
+    },
+    {
+      "id": "sharpness",
+      "label": "Sharpness (experimental)",
+      "status": "fail",
+      "value": {
+        "laplacian_variance": 0
+      },
+      "threshold": "recommendation on sampled grid: pass >=100; warn >=30",
+      "tip": "Inspect eyes and clothing edges at original size; use stable focus and avoid motion blur. Texture can inflate this heuristic; it cannot prove focus."
+    },
+    {
+      "id": "face_framing",
+      "label": "Face size and framing",
+      "status": "not_checked",
+      "value": null,
+      "threshold": "Manual review required",
+      "tip": "No reliable face detector is used. Manually check head and shoulders, eyes near the upper third and sufficient space around the head."
+    }
+  ],
+  "recommended_crops": {
+    "linkedin": "1:1"
+  },
+  "notes": [
+    "Pixel metrics use a nearest-neighbor grid with a maximum 64 px long side. Whole-image heuristics can be affected by clothing and background; inspect the original. EXIF orientation is not applied; re-export upright."
+  ]
+}
