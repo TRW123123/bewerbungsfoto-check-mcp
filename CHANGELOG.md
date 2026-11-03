@@ -1,7 +1,9 @@
 # Changelog
 
-## Unreleased — 2026-11-03
+## 0.1.2 — 2026-11-03
 
+- Prepare English directory listings, legal pages, verification instructions and original icon; no deployment or publication.
+- Type criterion values explicitly for Inspector compatibility, clarify tool side effects and WebP coverage, and align release metadata at 0.1.2.
 - Replace URL tee/counting TransformStream/concurrent info()+resize with one bounded buffer read (Content-Length preallocation or chunk assembly), header-only parsing and the same binding transform as base64. Preserve SSRF/redirect checks, timeout, Content-Type validation and declared/actual 8 MB limits; remove the 64 KB JPEG header cutoff.
 - Always try Images in auto mode, including tiny inputs. Native tiny JPEG/PNG decoding remains a fallback when the binding is missing or fails; retain `images-binding`, `full` and `header-only` labels and diagnostic modes.
 - Record operator production CPU after the 64 px/lazy-decoder round: streaming Wikimedia JPEG URLs (351 KB / 1.2 MB / 2.7 MB) **49–79 ms**; binding-backed base64 of the same 351 KB JPEG (~470 KB encoded) **15 ms**; native tiny 102×128 base64 PNG **49 ms**; `get_headshot_photo_requirements` **2 ms**. These motivate reducing URL stream machinery and avoiding tiny source decoding in JS. This new revision is unmeasured in production; no Free CPU compliance claim.

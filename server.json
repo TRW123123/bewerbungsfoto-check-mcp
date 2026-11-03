@@ -1,11 +1,14 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "de.profilfoto-ki/headshot-photo-check",
+  "name": "de.profilfoto-ki/headshot-check",
   "title": "Headshot Photo Check",
   "description": "Technical checks and crop recommendations for professional profile and application photos.",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "websiteUrl": "https://profilfoto-ki.de",
   "remotes": [
-    { "type": "streamable-http", "url": "https://mcp.profilfoto-ki.de/mcp" }
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.profilfoto-ki.de/mcp"
+    }
   ]
 }

@@ -34,7 +34,7 @@ export function requirements(target: Target) {
                   ? "3:4, 2:3 or 4:5; square also usable"
                   : "1:1",
             },
-      formats: "JPEG or PNG for full analysis; WebP dimensions only",
+      formats: "JPEG or PNG; WebP pixel metrics require the optional Images binding, otherwise dimensions only",
       max_bytes: 8_000_000,
       brightness:
         "35–76% mean luminance; dark clipping <=16%, bright clipping <=20%",
@@ -112,9 +112,9 @@ export function headersCriteria(
       "File size and format",
       format === "webp" ? "warn" : "pass",
       { bytes, format },
-      "service limit 8,000,000 bytes; JPEG/PNG full decode; no platform upload limit claimed",
+      "service limit 8,000,000 bytes; pixel coverage depends on decoder or Images binding; no platform upload limit claimed",
       format === "webp"
-        ? "Convert to JPEG/PNG for full analysis."
+        ? "If pixel checks are unavailable, convert to JPEG/PNG or use an available Images binding."
         : "Keep an original copy and export JPEG or PNG within the destination upload limit.",
     ),
   ];

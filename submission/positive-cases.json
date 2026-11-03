@@ -1,0 +1,44 @@
+[
+  {
+    "name": "LinkedIn checklist",
+    "prompt": "Give me the technical photo requirements for LinkedIn.",
+    "tool": "get_headshot_photo_requirements",
+    "arguments": {
+      "target": "linkedin"
+    }
+  },
+  {
+    "name": "XING checklist",
+    "prompt": "Give me the technical photo requirements for XING.",
+    "tool": "get_headshot_photo_requirements",
+    "arguments": {
+      "target": "xing"
+    }
+  },
+  {
+    "name": "Application checklist",
+    "prompt": "Give me the technical photo requirements for a job application.",
+    "tool": "get_headshot_photo_requirements",
+    "arguments": {
+      "target": "application"
+    }
+  },
+  {
+    "name": "Black pixel",
+    "prompt": "Check this synthetic PNG for LinkedIn: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4XmNgYGD4DwABBAEA43qFxAAAAABJRU5ErkJggg==",
+    "tool": "check_headshot_photo",
+    "arguments": {
+      "target": "linkedin",
+      "image_base64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4XmNgYGD4DwABBAEA43qFxAAAAABJRU5ErkJggg=="
+    }
+  },
+  {
+    "name": "White pixel",
+    "prompt": "Check this synthetic PNG for LinkedIn: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4XmP4DwQACfsD/YcUtbcAAAAASUVORK5CYII=",
+    "tool": "check_headshot_photo",
+    "arguments": {
+      "target": "linkedin",
+      "image_base64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4XmP4DwQACfsD/YcUtbcAAAAASUVORK5CYII="
+    }
+  }
+]

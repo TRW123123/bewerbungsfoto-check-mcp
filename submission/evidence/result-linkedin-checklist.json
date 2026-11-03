@@ -1,0 +1,25 @@
+{
+  "target": "linkedin",
+  "recommendations": {
+    "digital": "600 × 800 px; evaluator warns at short edge >=600 and long edge >=750",
+    "print": "1200 × 1600 px recommended; evaluator passes at short edge >=1200 and long edge >=1500",
+    "crops": {
+      "linkedin": "1:1"
+    },
+    "formats": "JPEG or PNG; WebP pixel metrics require the optional Images binding, otherwise dimensions only",
+    "max_bytes": 8000000,
+    "brightness": "35–76% mean luminance; dark clipping <=16%, bright clipping <=20%",
+    "contrast": "Luminance standard deviation 32–84 and P95–P5 >=105",
+    "background": "Border unrest index <=4.5 pass; <=10.5 warn",
+    "sharpness": "Experimental recommendation: Laplacian variance >=100 pass; >=30 warn on <=64 px grid"
+  },
+  "checklist": [
+    "Use the original camera file; avoid enlarging a small image.",
+    "Use soft, frontal daylight and avoid clipped highlights or shadows.",
+    "Clean the camera lens and avoid backlighting.",
+    "Check white balance against a neutral wall or shirt collar.",
+    "Choose a plain or softly blurred background.",
+    "Manually check head and shoulders, eyes near the upper third and room around the head."
+  ],
+  "note": "Recommendations from the reference tool, not official platform upload specifications. No face detection or biometric identification."
+}

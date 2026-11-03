@@ -1,6 +1,6 @@
 # Build report — 2026-11-03
 
-Status: **not deployed, not submitted**. Built only in this repository; reference files were read-only. No login, push, remote creation, paid API or registry submission.
+Historical build report: the original work described below was local only. Current operator-reported status: main v0.1.1 is live through the Netlify proxy; submission-prep prepares v0.1.2 without deployment or submission. See [submission/README.md](submission/README.md) for current materials and checks. Historical measurements below remain as recorded.
 
 - Tools: `check_headshot_photo` (one HTTPS/base64 image; technical criteria, 0–100 score, prioritized tips), `get_headshot_photo_requirements` (static destination recommendations/checklist).
 - Worker: stateless Streamable HTTP JSON at `/mcp`; three negotiated protocol versions; CORS; health endpoint; bounded inputs/fetches; anonymous counters and guarded optional Analytics Engine.
@@ -27,7 +27,7 @@ Second-pass validation: npm install (0 audit vulnerabilities), typecheck, **83 t
 
 ## Open operator/launch issues
 
-- Decide DNS/subdomain and deployment routing: existing site is on Netlify; proposed URL `https://mcp.profilfoto-ki.de/mcp` is inactive.
+- DNS/subdomain and proxy routing are now established per the operator: `https://mcp.profilfoto-ki.de/mcp` is live via Netlify to Cloudflare. Later deployments and publication still require separate approval.
 - Confirm legal contacts/address, log retention, processor/legal details and publish draft policy/support/terms routes. Verify developer/domain identity; record demo video and live ChatGPT/Claude golden-prompt results before submission. None are represented as completed.
 - Public-hostname DNS rebinding/private DNS resolution is not pinned by the fetch-based SSRF guard; stronger egress policy or an image-host allowlist remains necessary if that threat is in scope. Per-isolate hashed-IP limiting is best-effort; global rate rules and external uptime monitoring remain operator setup.
 - Face framing is honestly unchecked; sharpness and overall score are heuristics. WebP pixel analysis requires the Images binding; orientation/color handling can differ between local and production transforms. Review original images manually. No generation/editing or personal-attribute judgments.

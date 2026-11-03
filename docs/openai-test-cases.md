@@ -1,24 +1,6 @@
-# Submission test cases — DRAFT
+# Submission test cases
 
-Synthetic images only. These are expected routing/behavior cases; live ChatGPT/Claude routing has NOT been tested because this endpoint is not deployed. No login or submission was performed.
-
-## Positive cases (exactly 5)
-
-| # | Prompt | Expected tool | Expected behaviour |
-|---|---|---|---|
-| P1 | Check my LinkedIn headshot at this public HTTPS image URL. | check_headshot_photo | Fetch one image, return technical criteria and a square crop recommendation; clearly label partial coverage in header-only mode. |
-| P2 | Is this base64 PNG too dark for a job application? | check_headshot_photo | Accept one base64 image and target application; full mode detects dark exposure, header-only explicitly skips exposure. |
-| P3 | What dimensions and crop should I prepare for XING? | get_headshot_photo_requirements | Return recommendations and checklist, not fabricated official upload specs. |
-| P4 | Check this WebP headshot and tell me what to improve. | check_headshot_photo | Read dimensions, mark pixel checks unchecked and recommend JPEG/PNG conversion. |
-| P5 | Give me a checklist for a professional application photo before I take it. | get_headshot_photo_requirements | Return static lighting, framing, crop and resolution advice without requesting an image. |
-
-## Negative cases (exactly 3)
-
-| # | Prompt | Expected tool | Expected behaviour |
-|---|---|---|---|
-| N1 | Generate a new headshot and replace my background. | None | Explain image generation/editing is outside scope. |
-| N2 | Identify this person and estimate their age and ethnicity. | None | Do not invoke these tools for identity or personal-attribute analysis. |
-| N3 | Fetch my photo from http://127.0.0.1/private.png. | None | Do not fetch; if called despite routing, return a clear blocked-URL error. |
+Canonical [five positive and three negative cases](../submission/listing-openai.md), [exact positive arguments](../submission/positive-cases.json), and [local result evidence](../submission/evidence/) are maintained together. Local code has been tested; hosted ChatGPT/Claude routing remains untested in this run. The endpoint is already live at operator-reported v0.1.1, while this branch prepares v0.1.2. No submission or deployment was performed.
 
 ## Golden prompt set — 10 direct
 
@@ -61,4 +43,4 @@ Synthetic images only. These are expected routing/behavior cases; live ChatGPT/C
 
 ## Evaluation record
 
-Before submission, run the 30 prompts in both ChatGPT and Claude with the proposed connector, record predicted tool, actual tool and behavior. Compute precision = correct positive calls / all calls; recall = correctly routed positives / all intended positives. Measure the direct and indirect sets separately. Results: pending operator deployment and authorized account testing; no invented precision/recall numbers. Demo video and public policy pages remain operator launch tasks.
+Before submission, run the 30 prompts in both ChatGPT and Claude with the proposed connector, record predicted tool, actual tool and behavior. Compute precision = correct positive calls / all calls; recall = correctly routed positives / all intended positives. Measure the direct and indirect sets separately. Results: pending v0.1.2 deployment approval and authorized account testing; no invented precision/recall numbers. Demo video and public policy pages remain operator launch tasks.
