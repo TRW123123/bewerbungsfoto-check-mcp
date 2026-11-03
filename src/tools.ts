@@ -30,7 +30,7 @@ export const tools = [
     name: "check_headshot_photo",
     title: "Check headshot photo",
     description:
-      "Use this when the user wants technical checks of one professional profile or job-application photo from a public HTTPS URL or base64. Maximum 8 MB; JPEG/PNG pixel analysis requires full mode and at most 4 megapixels; otherwise only headers are checked. WebP receives header checks only. Face framing is not checked. URL fetching is limited to 8 seconds and 3 redirects. Do not use for image creation, editing, personal-attribute judgments or identity verification." +
+      "Use this when the user wants technical checks of one professional profile or job-application photo from a public HTTPS URL or base64. Maximum 8 MB; Auto mode resizes through an optional Images binding for pixel metrics, including WebP. Without it, only small JPEG/PNG inputs receive pixel checks; other inputs receive explicit header-only results. Sharpness detects coarse blur only. Face framing is not checked. URL fetching is limited to 8 seconds and 3 redirects. Do not use for image creation, editing, personal-attribute judgments or identity verification." +
       policy,
     inputSchema: {
       ...object(
@@ -66,7 +66,7 @@ export const tools = [
         overall_score: { type: "integer", minimum: 0, maximum: 100 },
         verdict: { type: "string" },
         target,
-        analysis_mode: { type: "string", enum: ["full", "header-only"] },
+        analysis_mode: { type: "string", enum: ["full", "images-binding", "header-only"] },
         score_scope: { type: "string" },
         criteria: { type: "array", items: criterion, maxItems: 9 },
         improvement_tips: {

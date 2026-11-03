@@ -5,9 +5,13 @@ compatibility_date = "2026-11-03"
 port = 8787
 ip = "127.0.0.1"
 [vars]
-# Safe default for the Workers Free CPU budget; full decode is opt-in.
-ANALYSIS_MODE = "header-only"
+# Prefer bounded pixel analysis. See docs/cpu-budget.md.
+ANALYSIS_MODE = "auto"
 # Optional after operator setup (not needed locally):
 # [[analytics_engine_datasets]]
 # binding = "ANALYTICS"
 # dataset = "headshot_calls"
+
+# Offline local implementation; Images Free quota applies in production.
+[images]
+binding = "IMAGES"

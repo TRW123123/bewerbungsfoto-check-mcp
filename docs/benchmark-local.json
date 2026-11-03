@@ -1,0 +1,26 @@
+[
+  {
+    "width": 1500,
+    "height": 2000,
+    "bytes": 317387,
+    "cold_wall_ms": 141.42841500000003,
+    "warm_wall_ms": [
+      34.55074000000002,
+      31.763784999999984,
+      29.520407000000034
+    ],
+    "worker_cpu_ms": "unknown; HTTP wall time includes offline resize and transport"
+  },
+  {
+    "width": 3000,
+    "height": 4000,
+    "bytes": 1268749,
+    "cold_wall_ms": 64.55731200000002,
+    "warm_wall_ms": [
+      53.90961799999991,
+      49.62813900000003,
+      50.444492999999966
+    ],
+    "worker_cpu_ms": "unknown; HTTP wall time includes offline resize and transport"
+  }
+]

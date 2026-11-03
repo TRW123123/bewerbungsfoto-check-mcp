@@ -85,7 +85,7 @@ bash scripts/smoke.sh http://127.0.0.1:8787
 npm run secret-scan
 ```
 
-No Cloudflare login, account bindings or secrets are needed for local development. Wrangler is a project devDependency. Default mode is header-only for the Workers Free CPU budget. To exercise full analysis locally:
+No Cloudflare login, account bindings or secrets are needed for local development. Wrangler is a project devDependency. Default mode is auto with an offline Images binding. It resizes to at most 128 px before pixel analysis. No login is required. To exercise the diagnostic full decoder locally:
 
 ```sh
 npx wrangler dev --port 8787 --ip 127.0.0.1 --var ANALYSIS_MODE:full
@@ -103,9 +103,11 @@ A best-effort per-isolate limiter permits 30 requests per minute per hashed netw
 
 ## Known limits
 
-Full JPEG/PNG decode occurs before downsampling. It is likely to exceed Workers Free's 10 ms CPU allowance for large photos; A local isolated Vitest run on 2026-11-03 with a generated 1500×2000 JPEG (317,387 bytes) measured **238.51 ms wall time**, **343.02 ms process CPU** and **0.077 ms header-only wall time**. Process CPU is aggregate process usage, not Cloudflare per-request CPU; encoding was excluded. These local measurements do not establish edge latency. The checked-in fallback `ANALYSIS_MODE = "header-only"` skips all pixel checks and labels results partial. Even header-only requests with large base64 bodies incur JSON/base64 CPU; 10 ms is not guaranteed. Use smaller inputs and benchmark the actual edge before launch. Full mode is an explicit operator choice for a suitable CPU budget.
+Auto mode uses the optional Images binding for JPEG/PNG/WebP pixel checks, with a maximum 128 px long side. Tiny JPEG/PNG inputs (<=16,384 pixels) decode directly. Header scores always describe the original file. Missing bindings, quota exhaustion and transform errors produce explicit `analysis_mode: "header-only"` and a reason. The checked-in binding works offline without login. Images Free includes 5,000 unique monthly transformations; new transformations beyond that fail without overage charges on Free. Operators must keep their account on Images Free. See [sourced CPU/quota research](docs/cpu-budget.md).
 
-Full decoding is capped at 4 MP, 8-bit PNG/JPEG and decoder memory bounds; PNG compressed metadata is stripped and inflated pixel bytes are bounded before decode; larger images receive header-only results. Header parsing allows at most 100 MP / 65,535 px per side. WebP VP8/VP8L/VP8X headers provide dimensions only and a convert-to-JPEG/PNG note. Header-only checks do not validate all compressed pixel data. EXIF orientation is not applied; re-export upright. Animated PNG/frame timing, ICC color management and semantic subject detection are not supported. Nearest-neighbor sampling, texture, clothing and image composition can affect pixel metrics. Sharpness is experimental, not proof of focus.
+Sharpness measures coarse blur only; reduced images conceal fine focus problems. No DC-only JPEG or AC-energy decoder is used (Option A selected). Full diagnostic mode is limited to 4 MP JPEG / 1 MP 8-bit PNG. PNG metadata/inflate guards remain. Original headers are bounded at 100 MP / 65,535 px per side. EXIF orientation/color handling may differ across resize implementations; re-export upright. Face framing, semantic subject detection and original-resolution focus are unchecked.
+
+Local benchmark numbers and methodology are in [BUILD-REPORT.md](BUILD-REPORT.md) and [machine-readable results](docs/benchmark-local.json). The previous full 1500×2000 JPEG decoder measured 238.51 ms wall / 343.02 ms process CPU. The new path avoids that full decode inside the Worker. Local HTTP wall times include the offline image service; local process CPU is not Cloudflare request CPU. Production CPU remains unknown. Large JSON/base64 requests can still exceed the 10 ms Free budget; these measurements are no guarantee.
 
 ## Privacy and operations
 

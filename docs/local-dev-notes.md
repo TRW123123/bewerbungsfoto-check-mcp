@@ -5,3 +5,5 @@
 The first dependency install requested a nonexistent date-specific workers-types release and returned: `npm error notarget No matching version found for @cloudflare/workers-types@^4.20261103.0.` The project was corrected to an available version and the lockfile records the installed dependency set. This was not a Wrangler login failure. No login was attempted.
 
 No deployment or remote connector validation has been performed. Local success does not prove Workers Free CPU compliance. See README Known limits and BUILD-REPORT.md.
+
+Second pass: `[images] binding = "IMAGES"` started in local mode without login. Auto-mode generated base64 JPEG calls at 1500×2000 and 3000×4000 returned `images-binding`, nine criteria and pixel checks. `scripts/benchmark-local.mjs` records outputs/timings without input photo bytes. Default smoke was repeated. No remote mode, account configuration or paid service was used. Processes were stopped.

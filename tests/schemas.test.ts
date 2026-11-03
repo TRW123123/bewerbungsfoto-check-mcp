@@ -18,3 +18,12 @@ it("successful results match advertised output schemas", () => {
     true,
   );
 });
+
+it("real offline binding smoke results match the output schema", async () => {
+  const { readFileSync } = await import("node:fs");
+  const validate = new Ajv({ strict: false }).compile(tools[0].outputSchema);
+  for (const size of [1500, 3000]) {
+    const result = JSON.parse(readFileSync(`docs/smoke-${size}.json`, "utf8")).result.structuredContent;
+    expect(validate(result), JSON.stringify(validate.errors)).toBe(true);
+  }
+});

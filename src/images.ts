@@ -157,7 +157,9 @@ export function base64Image(input: string): Uint8Array {
   }
   if (s.length > MAX_BYTES)
     throw new Error("Image exceeds the 8,000,000 byte limit.");
-  return Uint8Array.from(s, (c) => c.charCodeAt(0));
+  const bytes = new Uint8Array(s.length);
+  for (let i = 0; i < s.length; i++) bytes[i] = s.charCodeAt(i);
+  return bytes;
 }
 export interface Header {
   width: number;
@@ -290,7 +292,7 @@ export function analyzeImage(bytes: Uint8Array, target: Target, mode = "full") {
     criteria = headersCriteria(h.width, h.height, bytes.length, h.format),
     notes: string[] = [];
   const full =
-    mode === "full" && h.format !== "webp" && h.width * h.height <= 4_000_000;
+    mode === "full" && h.format !== "webp" && h.width * h.height <= (h.format === "png" ? 1_000_000 : 4_000_000);
   if (full) {
     let rgba: Uint8Array | Uint8ClampedArray;
     try {
@@ -354,7 +356,7 @@ export function analyzeImage(bytes: Uint8Array, target: Target, mode = "full") {
         ? "Convert to JPEG/PNG for full analysis."
         : mode !== "full"
           ? "Header-only mode is enabled to reduce CPU use."
-          : "Images above 4 megapixels receive header-only checks to bound decoder memory.";
+          : "Full decode exceeds the safety cap (1 MP PNG / 4 MP JPEG); header-only checks were used.";
     notes.push(reason);
     for (const [id, label] of [
       ["brightness", "Brightness"],
@@ -389,4 +391,48 @@ export function analyzeImage(bytes: Uint8Array, target: Target, mode = "full") {
     recommended_crops: requirements(target).recommendations.crops,
     notes,
   };
+}
+
+// Structural subset makes the optional platform binding easy to test without a service.
+export interface ImageResizer {
+  input(stream: ReadableStream<Uint8Array>): {
+    transform(options: { width: number; height: number }): {
+      output(options: { format: "image/png" }): Promise<{ response(): Response }>;
+    };
+  };
+}
+export async function analyzeAuto(bytes: Uint8Array, target: Target, mode = "auto", images?: ImageResizer) {
+  if (bytes.length > MAX_BYTES) throw new Error("Image exceeds the 8,000,000 byte limit.");
+  const h = imageHeader(bytes);
+  if (mode === "header-only" || mode === "full") return analyzeImage(bytes, target, mode);
+  let failure = "Images binding is unavailable.";
+  // Small native inputs avoid a transformation entirely. Keep this conservative for CPU.
+  if (h.format !== "webp" && h.width * h.height <= 16_384)
+    return analyzeImage(bytes, target, "full");
+  if (images) {
+    try {
+      const scale = Math.min(1, 128 / Math.max(h.width, h.height));
+      const width = Math.max(1, Math.round(h.width * scale));
+      const height = Math.max(1, Math.round(h.height * scale));
+      const stream = new ReadableStream<Uint8Array>({ start(c) { c.enqueue(bytes); c.close(); } });
+      const output = await images.input(stream).transform({ width, height }).output({ format: "image/png" });
+      const response = output.response();
+      if (!response.ok) throw new Error("Transformation failed.");
+      const small = await readLimited(response.body, 150_000);
+      const sh = imageHeader(small);
+      if (sh.format !== "png" || sh.width !== width || sh.height !== height)
+        throw new Error("Unexpected transformation dimensions.");
+      const result = analyzeImage(small, target, "full");
+      result.criteria.splice(0, 3, ...headersCriteria(h.width, h.height, bytes.length, h.format));
+      Object.assign(result, summarize(result.criteria));
+      result.analysis_mode = "images-binding";
+      result.notes = ["Pixel metrics use an Images binding resize to a maximum 128 px long side. Original dimensions, format and byte size are used for header checks. Sharpness detects coarse blur only; resizing removes fine focus detail. No JPEG DC/AC coefficient analysis is performed. Re-export upright; orientation and color handling can differ between local and production resizing."];
+      return result;
+    } catch {
+      failure = "Images transformation or small-image decode failed (including possible quota exhaustion).";
+    }
+  }
+  const result = analyzeImage(bytes, target, "header-only");
+  result.notes = [failure + " No bounded pixel path is available for this input; header-only checks were used. Try a JPEG/PNG no larger than 128 × 128 pixels."];
+  return result;
 }

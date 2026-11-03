@@ -1,5 +1,6 @@
 import {
-  analyzeImage,
+  analyzeAuto,
+  type ImageResizer,
   base64Image,
   fetchImage,
   MAX_REQUEST_BYTES,
@@ -9,6 +10,7 @@ import { requirements, targets, type Target } from "./scoring";
 import { tools } from "./tools";
 export interface Env {
   ANALYSIS_MODE?: string;
+  IMAGES?: ImageResizer;
   ANALYTICS?: {
     writeDataPoint(point: { blobs: string[]; doubles: number[] }): void;
   };
@@ -110,10 +112,11 @@ export async function callTool(name: unknown, args: unknown, env: Env) {
         typeof a.image_url === "string"
           ? await fetchImage(a.image_url)
           : base64Image(a.image_base64 as string);
-      result = analyzeImage(
+      result = await analyzeAuto(
         bytes,
         target as Target,
-        env.ANALYSIS_MODE === "full" ? "full" : "header-only",
+        env.ANALYSIS_MODE ?? "auto",
+        env.IMAGES,
       );
     }
     ok = true;
