@@ -19,7 +19,7 @@ Categories: Productivity, Creative (2 suggestions from the directory taxonomy; c
 
 ## Connection and identity
 
-Remote URL: https://mcp.profilfoto-ki.de/mcp. Transport: Streamable HTTP; authentication: none. Website language: German; tools and these listings: English. Developer: [SAFAK_DEVELOPER_NAME]; `profilfoto-ki.de` is an option if it matches the verified publisher identity.
+Remote URL: https://mcp.profilfoto-ki.de/mcp. Transport: Streamable HTTP; authentication: none. Website language: German; tools and these listings: English. Developer: profilfoto-ki.de (operator: Safak Tepecik, Profilfoto KI); must match the verified publisher identity.
 
 ## Links
 

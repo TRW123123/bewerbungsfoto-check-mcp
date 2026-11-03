@@ -1,10 +1,10 @@
 # Support — Headshot Photo Check
 
-Effective date: [EFFECTIVE_DATE]
+Effective date: 2026-11-03
 
 ## Contact
 
-Operator: [SAFAK_LEGAL_NAME], [SAFAK_POSTAL_ADDRESS]. For help, privacy requests, complaints or accessibility needs, email [SAFAK_CONTACT_EMAIL]. For confidential vulnerability reports, email [SAFAK_SECURITY_CONTACT_EMAIL]. No response-time guarantee is offered.
+Operator: Safak Tepecik, operating as Profilfoto KI, Heidestraße 2, 58239 Schwerte, Germany. For help, privacy requests, complaints or accessibility needs, email info@profilfoto-ki.de. For confidential vulnerability reports, email info@profilfoto-ki.de. No response-time guarantee is offered.
 
 ## Connect and use
 
