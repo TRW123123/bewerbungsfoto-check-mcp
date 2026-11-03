@@ -1,10 +1,10 @@
 # Privacy policy — Headshot Photo Check
 
-Effective date: [EFFECTIVE_DATE]
+Effective date: 2026-11-03
 
 ## Controller and contact
 
-[SAFAK_LEGAL_NAME], [SAFAK_POSTAL_ADDRESS], operates Headshot Photo Check at https://mcp.profilfoto-ki.de/mcp. Contact: [SAFAK_CONTACT_EMAIL]. Security reports: [SAFAK_SECURITY_CONTACT_EMAIL].
+Safak Tepecik, operating as Profilfoto KI, Heidestraße 2, 58239 Schwerte, Germany, operates Headshot Photo Check at https://mcp.profilfoto-ki.de/mcp. Contact: info@profilfoto-ki.de. Security reports: info@profilfoto-ki.de.
 
 ## Data and purposes
 
@@ -36,7 +36,7 @@ Cloudflare, Netlify, your assistant provider and selected image hosts may proces
 
 You choose whether to call a tool, which photo to send and whether to use a URL or base64. The requirements tool needs no photo or image URL. Stop using the connector or disconnect it in your assistant to prevent future calls. Removing a chat is governed by your assistant provider. Because the application stores no photos, there is no stored-photo deletion interface and we cannot retrieve an earlier photo.
 
-Depending on applicable law, you may request access, correction, deletion, restriction, portability or object to processing based on legitimate interests. Contact [SAFAK_CONTACT_EMAIL]; provide the approximate time and tool used, without resending the photo. We may need proportionate verification to handle a request. You may complain to your competent data protection supervisory authority. Rights involving another provider's records may need to be exercised with that provider.
+Depending on applicable law, you may request access, correction, deletion, restriction, portability or object to processing based on legitimate interests. Contact info@profilfoto-ki.de; provide the approximate time and tool used, without resending the photo. We may need proportionate verification to handle a request. You may complain to your competent data protection supervisory authority. Rights involving another provider's records may need to be exercised with that provider.
 
 ## Children
 
@@ -44,4 +44,4 @@ This service is intended for adults aged 18 or over. Do not submit children's ph
 
 ## Changes
 
-We update this page and its effective date when practices change. Material changes will be described here before they take effect where required by law. Contact [SAFAK_CONTACT_EMAIL] for questions or accessible copies.
+We update this page and its effective date when practices change. Material changes will be described here before they take effect where required by law. Contact info@profilfoto-ki.de for questions or accessible copies.

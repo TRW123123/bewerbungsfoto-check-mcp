@@ -2,7 +2,7 @@
 
 - displayName (20/30 characters): Headshot Photo Check
 - shortDescription (29/30 characters): Check photo technical quality
-- developerName: [SAFAK_DEVELOPER_NAME] (22/80 characters); option: profilfoto-ki.de, subject to verified identity.
+- developerName: profilfoto-ki.de (16/80 characters); must match the verified publisher identity (operator: Safak Tepecik, Profilfoto KI).
 - Category suggestion: Productivity; confirm in dashboard.
 
 LongDescription (1216/4000 characters):
@@ -24,7 +24,7 @@ Check an existing professional profile or job-application photo for dimensions, 
 
 ## Connection and identity
 
-Remote URL: https://mcp.profilfoto-ki.de/mcp. Transport: Streamable HTTP; authentication: none. Website language: German; tools and these listings: English. Developer: [SAFAK_DEVELOPER_NAME]; `profilfoto-ki.de` is an option if it matches the verified publisher identity.
+Remote URL: https://mcp.profilfoto-ki.de/mcp. Transport: Streamable HTTP; authentication: none. Website language: German; tools and these listings: English. Developer: profilfoto-ki.de (operator: Safak Tepecik, Profilfoto KI); must match the verified publisher identity.
 
 ## Links
 

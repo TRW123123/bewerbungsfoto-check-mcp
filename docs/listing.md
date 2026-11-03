@@ -14,7 +14,7 @@
   "categories": [
     "Productivity"
   ],
-  "developerName": "[SAFAK_DEVELOPER_NAME]",
+  "developerName": "profilfoto-ki.de",
   "websiteURL": "https://profilfoto-ki.de",
   "supportURL": "https://profilfoto-ki.de/mcp/support",
   "privacyPolicyURL": "https://profilfoto-ki.de/mcp/privacy",

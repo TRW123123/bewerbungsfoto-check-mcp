@@ -1,10 +1,10 @@
 # Terms of use — Headshot Photo Check
 
-Effective date: [EFFECTIVE_DATE]
+Effective date: 2026-11-03
 
 ## Operator and agreement
 
-The service is operated by [SAFAK_LEGAL_NAME], [SAFAK_POSTAL_ADDRESS]. Contact: [SAFAK_CONTACT_EMAIL]. These terms govern use of https://mcp.profilfoto-ki.de/mcp. By using it, you agree to these terms to the extent permitted by applicable law. If you do not agree, do not use the service.
+The service is operated by Safak Tepecik, operating as Profilfoto KI, Heidestraße 2, 58239 Schwerte, Germany. Contact: info@profilfoto-ki.de. These terms govern use of https://mcp.profilfoto-ki.de/mcp. By using it, you agree to these terms to the extent permitted by applicable law. If you do not agree, do not use the service.
 
 ## Service and limitations
 
@@ -30,4 +30,4 @@ We may restrict abusive access, maintain, change or discontinue the service. Tec
 
 ## Changes, law and contact
 
-Revised terms will be posted with a new effective date; material changes will be communicated here where required. No provision removes mandatory protections under the law applicable to you. If a term is unenforceable, the remaining terms continue to apply to the extent lawful. Questions, complaints and accessibility requests: [SAFAK_CONTACT_EMAIL]. Security concerns: [SAFAK_SECURITY_CONTACT_EMAIL].
+Revised terms will be posted with a new effective date; material changes will be communicated here where required. No provision removes mandatory protections under the law applicable to you. If a term is unenforceable, the remaining terms continue to apply to the extent lawful. Questions, complaints and accessibility requests: info@profilfoto-ki.de. Security concerns: info@profilfoto-ki.de.
