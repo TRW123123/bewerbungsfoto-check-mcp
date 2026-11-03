@@ -224,6 +224,48 @@ describe("URL and byte guards", () => {
       ),
     ).toEqual(b);
   });
+  it("sends a descriptive User-Agent on every redirect hop", async () => {
+    const f = vi.fn().mockResolvedValueOnce(new Response(null, {
+      status: 302, headers: { location: "/next" },
+    })).mockResolvedValueOnce(new Response(png(), {
+      headers: { "content-type": "image/png" },
+    }));
+    await fetchImage("https://public.org/a", f);
+    expect(f).toHaveBeenCalledTimes(2);
+    for (const [, options] of f.mock.calls)
+      expect(new Headers(options.headers).get("User-Agent")).toBe(
+        "HeadshotPhotoCheck/0.1 (+https://profilfoto-ki.de; MCP photo checker)",
+      );
+  });
+  it("reports HTTP status without disclosing the URL", async () => {
+    await expect(fetchImage("https://public.org/secret", vi.fn()
+      .mockResolvedValue(new Response(null, { status: 403 })))).rejects.toThrow(
+        "Image host returned HTTP 403. Check that the URL is public and accessible.",
+      );
+  });
+  it("decodes base64 with native and fallback paths", () => {
+    const bytes = png();
+    const original = Object.getOwnPropertyDescriptor(Uint8Array, "fromBase64");
+    const native = vi.fn((s: string) => new Uint8Array(Buffer.from(s, "base64")));
+    try {
+      Object.defineProperty(Uint8Array, "fromBase64", { configurable: true, value: native });
+      expect(base64Image(base64(bytes))).toEqual(bytes);
+      expect(native).toHaveBeenCalledOnce();
+    } finally {
+      if (original) Object.defineProperty(Uint8Array, "fromBase64", original);
+      else Reflect.deleteProperty(Uint8Array, "fromBase64");
+    }
+    try {
+      Object.defineProperty(Uint8Array, "fromBase64", { configurable: true, value: undefined });
+      expect(base64Image("data:image/png;base64," + base64(bytes))).toEqual(bytes);
+    } finally {
+      if (original) Object.defineProperty(Uint8Array, "fromBase64", original);
+      else Reflect.deleteProperty(Uint8Array, "fromBase64");
+    }
+  });
+  it.each(["AA A", "AA\nA", "AA-A", "AA_A", "A===", "AA=A", "AAAA=", "?"])(
+    "rejects malformed base64 %j", value => expect(() => base64Image(value)).toThrow(),
+  );
   it("caps streamed body", async () => {
     await expect(readLimited(new Response("12345").body, 4)).rejects.toThrow(
       "limit",

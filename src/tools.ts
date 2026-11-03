@@ -30,7 +30,7 @@ export const tools = [
     name: "check_headshot_photo",
     title: "Check headshot photo",
     description:
-      "Use this when the user wants technical checks of one professional profile or job-application photo from a public HTTPS URL or base64. Maximum 8 MB; Auto mode resizes through an optional Images binding for pixel metrics, including WebP. Without it, only small JPEG/PNG inputs receive pixel checks; other inputs receive explicit header-only results. Sharpness detects coarse blur only. Face framing is not checked. URL fetching is limited to 8 seconds and 3 redirects. Do not use for image creation, editing, personal-attribute judgments or identity verification." +
+      "Use this when the user wants technical checks of one professional profile or job-application photo from a public HTTPS URL or base64. Maximum 8 MB; image_url is recommended. Base64 above roughly 150 KB may exceed the Workers Free CPU budget. Auto mode resizes through an optional Images binding for pixel metrics, including WebP. Without it, only small JPEG/PNG inputs receive pixel checks; other inputs receive explicit header-only results. Sharpness detects coarse blur only. Face framing is not checked. URL fetching is limited to 8 seconds and 3 redirects. Do not use for image creation, editing, personal-attribute judgments or identity verification." +
       policy,
     inputSchema: {
       ...object(
@@ -49,7 +49,7 @@ export const tools = [
             minLength: 1,
             maxLength: 10666720,
             description:
-              "One JPEG, PNG or WebP encoded as base64, optionally prefixed by data:image/...;base64,. At most 8,000,000 decoded bytes.",
+              "One JPEG, PNG or WebP encoded as base64, optionally prefixed by data:image/...;base64,. At most 8,000,000 decoded bytes. Prefer image_url; base64 payloads above roughly 150 KB may exceed the Workers Free CPU budget.",
             examples: ["data:image/png;base64,iVBORw0KGgo..."],
           },
           target,

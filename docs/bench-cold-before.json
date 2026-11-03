@@ -1,0 +1,402 @@
+{
+  "node": "v24.22.1",
+  "bundle_bytes": 329928,
+  "rows": [
+    {
+      "width": 102,
+      "height": 128,
+      "format": "png",
+      "flag": "--jitless",
+      "samples": [
+        {
+          "import_ms": 7.095,
+          "analysis_ms": 30.705,
+          "mode": "full"
+        },
+        {
+          "import_ms": 7.257,
+          "analysis_ms": 32.259,
+          "mode": "full"
+        },
+        {
+          "import_ms": 7.079,
+          "analysis_ms": 31.47,
+          "mode": "full"
+        },
+        {
+          "import_ms": 6.92,
+          "analysis_ms": 30.865,
+          "mode": "full"
+        },
+        {
+          "import_ms": 7.66,
+          "analysis_ms": 32.622,
+          "mode": "full"
+        }
+      ]
+    },
+    {
+      "width": 102,
+      "height": 128,
+      "format": "png",
+      "flag": "--max-lazy",
+      "samples": [
+        {
+          "import_ms": 8.728,
+          "analysis_ms": 51.106,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.033,
+          "analysis_ms": 56.37,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.545,
+          "analysis_ms": 46.562,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.668,
+          "analysis_ms": 49.641,
+          "mode": "full"
+        },
+        {
+          "import_ms": 9.104,
+          "analysis_ms": 47.531,
+          "mode": "full"
+        }
+      ]
+    },
+    {
+      "width": 102,
+      "height": 128,
+      "format": "png",
+      "flag": "normal",
+      "samples": [
+        {
+          "import_ms": 8.304,
+          "analysis_ms": 50.417,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.397,
+          "analysis_ms": 50.723,
+          "mode": "full"
+        },
+        {
+          "import_ms": 10.865,
+          "analysis_ms": 54.929,
+          "mode": "full"
+        },
+        {
+          "import_ms": 9.727,
+          "analysis_ms": 47.622,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.284,
+          "analysis_ms": 47.179,
+          "mode": "full"
+        }
+      ]
+    },
+    {
+      "width": 102,
+      "height": 128,
+      "format": "jpeg",
+      "flag": "--jitless",
+      "samples": [
+        {
+          "import_ms": 8.309,
+          "analysis_ms": 42.997,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.234,
+          "analysis_ms": 44.245,
+          "mode": "full"
+        },
+        {
+          "import_ms": 7.131,
+          "analysis_ms": 42.962,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.581,
+          "analysis_ms": 38.894,
+          "mode": "full"
+        },
+        {
+          "import_ms": 7.129,
+          "analysis_ms": 37.979,
+          "mode": "full"
+        }
+      ]
+    },
+    {
+      "width": 102,
+      "height": 128,
+      "format": "jpeg",
+      "flag": "--max-lazy",
+      "samples": [
+        {
+          "import_ms": 9.462,
+          "analysis_ms": 48.119,
+          "mode": "full"
+        },
+        {
+          "import_ms": 9.449,
+          "analysis_ms": 47.576,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.337,
+          "analysis_ms": 49.947,
+          "mode": "full"
+        },
+        {
+          "import_ms": 7.886,
+          "analysis_ms": 46.106,
+          "mode": "full"
+        },
+        {
+          "import_ms": 9.477,
+          "analysis_ms": 47.48,
+          "mode": "full"
+        }
+      ]
+    },
+    {
+      "width": 102,
+      "height": 128,
+      "format": "jpeg",
+      "flag": "normal",
+      "samples": [
+        {
+          "import_ms": 8.132,
+          "analysis_ms": 49.926,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.594,
+          "analysis_ms": 50.461,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.992,
+          "analysis_ms": 48.765,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.795,
+          "analysis_ms": 45.694,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.815,
+          "analysis_ms": 46.138,
+          "mode": "full"
+        }
+      ]
+    },
+    {
+      "width": 128,
+      "height": 128,
+      "format": "png",
+      "flag": "--jitless",
+      "samples": [
+        {
+          "import_ms": 7.21,
+          "analysis_ms": 36.832,
+          "mode": "full"
+        },
+        {
+          "import_ms": 6.793,
+          "analysis_ms": 36.621,
+          "mode": "full"
+        },
+        {
+          "import_ms": 6.808,
+          "analysis_ms": 36.394,
+          "mode": "full"
+        },
+        {
+          "import_ms": 6.851,
+          "analysis_ms": 37.302,
+          "mode": "full"
+        },
+        {
+          "import_ms": 6.753,
+          "analysis_ms": 37.666,
+          "mode": "full"
+        }
+      ]
+    },
+    {
+      "width": 128,
+      "height": 128,
+      "format": "png",
+      "flag": "--max-lazy",
+      "samples": [
+        {
+          "import_ms": 8.479,
+          "analysis_ms": 56.847,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.811,
+          "analysis_ms": 52.51,
+          "mode": "full"
+        },
+        {
+          "import_ms": 7.94,
+          "analysis_ms": 59.442,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.955,
+          "analysis_ms": 53.256,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.598,
+          "analysis_ms": 54.354,
+          "mode": "full"
+        }
+      ]
+    },
+    {
+      "width": 128,
+      "height": 128,
+      "format": "png",
+      "flag": "normal",
+      "samples": [
+        {
+          "import_ms": 8.246,
+          "analysis_ms": 54.309,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.262,
+          "analysis_ms": 48.858,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.107,
+          "analysis_ms": 50.836,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.091,
+          "analysis_ms": 53.333,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.721,
+          "analysis_ms": 59.596,
+          "mode": "full"
+        }
+      ]
+    },
+    {
+      "width": 128,
+      "height": 128,
+      "format": "jpeg",
+      "flag": "--jitless",
+      "samples": [
+        {
+          "import_ms": 6.994,
+          "analysis_ms": 44.318,
+          "mode": "full"
+        },
+        {
+          "import_ms": 7.098,
+          "analysis_ms": 44.016,
+          "mode": "full"
+        },
+        {
+          "import_ms": 6.449,
+          "analysis_ms": 43.916,
+          "mode": "full"
+        },
+        {
+          "import_ms": 7.131,
+          "analysis_ms": 45.847,
+          "mode": "full"
+        },
+        {
+          "import_ms": 7.176,
+          "analysis_ms": 44.645,
+          "mode": "full"
+        }
+      ]
+    },
+    {
+      "width": 128,
+      "height": 128,
+      "format": "jpeg",
+      "flag": "--max-lazy",
+      "samples": [
+        {
+          "import_ms": 10.448,
+          "analysis_ms": 57.12,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.147,
+          "analysis_ms": 52.761,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.136,
+          "analysis_ms": 46.833,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.975,
+          "analysis_ms": 53.624,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.511,
+          "analysis_ms": 56.283,
+          "mode": "full"
+        }
+      ]
+    },
+    {
+      "width": 128,
+      "height": 128,
+      "format": "jpeg",
+      "flag": "normal",
+      "samples": [
+        {
+          "import_ms": 8.538,
+          "analysis_ms": 53.108,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.65,
+          "analysis_ms": 53.087,
+          "mode": "full"
+        },
+        {
+          "import_ms": 9.754,
+          "analysis_ms": 58.026,
+          "mode": "full"
+        },
+        {
+          "import_ms": 8.696,
+          "analysis_ms": 54.317,
+          "mode": "full"
+        },
+        {
+          "import_ms": 9.149,
+          "analysis_ms": 53.888,
+          "mode": "full"
+        }
+      ]
+    }
+  ]
+}

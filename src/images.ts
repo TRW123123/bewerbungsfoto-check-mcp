@@ -1,6 +1,4 @@
-import jpeg from "jpeg-js";
-import { decode as decodePng, convertIndexedToRgb } from "fast-png";
-import { Inflate } from "pako";
+import { nativePng } from "./native-png";
 import {
   criterion,
   headersCriteria,
@@ -48,10 +46,13 @@ export async function readLimited(
   body: ReadableStream<Uint8Array> | null,
   limit: number,
   signal?: AbortSignal,
+  contentLength?: number,
 ): Promise<Uint8Array> {
   if (!body) throw new Error("The response body is empty.");
   const reader = body.getReader(),
     chunks: Uint8Array[] = [];
+  let buffer = contentLength !== undefined && Number.isSafeInteger(contentLength) && contentLength >= 0 && contentLength <= limit
+    ? new Uint8Array(contentLength) : undefined;
   let total = 0;
   const abort = () => {
     void reader.cancel().catch(() => {});
@@ -70,8 +71,14 @@ export async function readLimited(
         throw new Error(
           `Input exceeds the ${limit.toLocaleString("en-US")} byte limit.`,
         );
-      chunks.push(value);
+      if (buffer && total <= buffer.length) buffer.set(value, total - value.length);
+      else {
+        // A dishonest short Content-Length must never truncate the actual body.
+        if (buffer) { chunks.push(buffer.subarray(0, total - value.length)); buffer = undefined; }
+        chunks.push(value);
+      }
     }
+    if (buffer) return buffer.subarray(0, total);
     const all = new Uint8Array(total);
     let p = 0;
     for (const c of chunks) {
@@ -85,10 +92,11 @@ export async function readLimited(
     reader.releaseLock();
   }
 }
-export async function fetchImage(
+async function withImageStream<T>(
   input: string,
+  consume: (body: ReadableStream<Uint8Array>, signal: AbortSignal, contentLength?: number) => Promise<T>,
   fetcher: typeof fetch = fetch,
-): Promise<Uint8Array> {
+): Promise<T> {
   const controller = new AbortController(),
     timer = setTimeout(() => controller.abort(), 8000);
   let url = safeUrl(input);
@@ -97,7 +105,10 @@ export async function fetchImage(
       const r = await fetcher(url.toString(), {
         redirect: "manual",
         signal: controller.signal,
-        headers: { Accept: "image/jpeg,image/png,image/webp" },
+        headers: {
+          Accept: "image/jpeg,image/png,image/webp",
+          "User-Agent": "HeadshotPhotoCheck/0.1 (+https://profilfoto-ki.de; MCP photo checker)",
+        },
       });
       if ([301, 302, 303, 307, 308].includes(r.status)) {
         await r.body?.cancel();
@@ -112,7 +123,7 @@ export async function fetchImage(
       if (!r.ok) {
         await r.body?.cancel();
         throw new Error(
-          "Image host returned an unsuccessful HTTP response. Check that the URL is public and accessible.",
+          `Image host returned HTTP ${r.status}. Check that the URL is public and accessible.`,
         );
       }
       if (!r.headers.get("content-type")?.toLowerCase().startsWith("image/")) {
@@ -123,7 +134,16 @@ export async function fetchImage(
         await r.body?.cancel();
         throw new Error("Image exceeds the 8,000,000 byte limit.");
       }
-      return await readLimited(r.body, MAX_BYTES, controller.signal);
+      if (!r.body) throw new Error("The response body is empty.");
+      let onAbort: (() => void) | undefined;
+      const deadline = new Promise<never>((_, reject) => {
+        onAbort = () => reject(new Error("Image fetch timed out after 8 seconds."));
+        if (controller.signal.aborted) onAbort();
+        else controller.signal.addEventListener("abort", onAbort, { once: true });
+      });
+      try { return await Promise.race([consume(r.body, controller.signal,
+        /^\d+$/.test(r.headers.get("content-length") ?? "") ? Number(r.headers.get("content-length")) : undefined), deadline]); }
+      finally { if (onAbort) controller.signal.removeEventListener("abort", onAbort); }
     }
     throw new Error("Unable to follow image URL.");
   } catch (e) {
@@ -138,29 +158,41 @@ export async function fetchImage(
     clearTimeout(timer);
   }
 }
+export function fetchImage(input: string, fetcher: typeof fetch = fetch) {
+  return withImageStream(input, (body, signal, length) => readLimited(body, MAX_BYTES, signal, length), fetcher);
+}
+
+export function analyzeUrl(input: string, target: Target, mode = "auto", images?: ImageResizer, fetcher: typeof fetch = fetch) {
+  return withImageStream(input, async (body, signal, length) =>
+    analyzeAuto(await readLimited(body, MAX_BYTES, signal, length), target, mode, images), fetcher);
+}
+
 export function base64Image(input: string): Uint8Array {
   const raw = input.replace(/^data:image\/[a-z0-9.+-]+;base64,/i, "");
-  if (
-    raw.length > Math.ceil(MAX_BYTES / 3) * 4 ||
-    !raw ||
-    raw.length % 4 === 1 ||
-    !/^[A-Za-z0-9+/]*={0,2}$/.test(raw)
-  )
-    throw new Error(
-      "Provide valid image base64 (maximum 8,000,000 decoded bytes).",
-    );
-  let s: string;
+  if (raw.length > Math.ceil(MAX_BYTES / 3) * 4 || !raw || raw.length % 4 === 1)
+    throw new Error("Provide valid image base64 (maximum 8,000,000 decoded bytes).");
+  let bytes: Uint8Array;
   try {
-    s = atob(raw);
+    // Decoders validate the alphabet/padding. Reject whitespace separately because
+    // both native decoders accept it, while this API has always rejected it.
+    if (/\s/.test(raw)) throw new Error("Whitespace in base64.");
+    const native = Uint8Array as typeof Uint8Array & {
+      fromBase64?: (input: string) => Uint8Array;
+    };
+    if (native.fromBase64) bytes = native.fromBase64(raw);
+    else {
+      const decoded = atob(raw);
+      bytes = new Uint8Array(decoded.length);
+      for (let i = 0; i < decoded.length; i++) bytes[i] = decoded.charCodeAt(i);
+    }
   } catch {
     throw new Error("Invalid image base64 encoding.");
   }
-  if (s.length > MAX_BYTES)
+  if (bytes.length > MAX_BYTES)
     throw new Error("Image exceeds the 8,000,000 byte limit.");
-  const bytes = new Uint8Array(s.length);
-  for (let i = 0; i < s.length; i++) bytes[i] = s.charCodeAt(i);
   return bytes;
 }
+
 export interface Header {
   width: number;
   height: number;
@@ -241,100 +273,27 @@ export function imageHeader(b: Uint8Array): Header {
     );
   return h;
 }
-// Strip ancillary metadata before decoding (in particular compressed ICC/text chunks).
-// Bound decompressed IDAT output before handing it to the decoder to resist PNG bombs.
-function safePng(bytes: Uint8Array, h: Header): Uint8Array {
-  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength),
-    parts = [bytes.subarray(0, 8)],
-    inflator = new Inflate();
-  let expanded = 0,
-    seenHeader = false,
-    seenEnd = false;
-  inflator.onData = (chunk: Uint8Array) => {
-    expanded += chunk.length;
-    if (expanded > h.width * h.height * 8 + h.height * 8 + 1024)
-      throw new Error("PNG decompression safety limit exceeded.");
-  };
-  for (let p = 8; p + 12 <= bytes.length; ) {
-    const length = view.getUint32(p);
-    if (length > bytes.length - p - 12) throw new Error("Truncated PNG chunk.");
-    const type = String.fromCharCode(...bytes.subarray(p + 4, p + 8));
-    if (type === "IHDR") {
-      if (seenHeader || p !== 8) throw new Error("Duplicate PNG header.");
-      seenHeader = true;
-    }
-    if (type === "IDAT") {
-      inflator.push(bytes.subarray(p + 8, p + 8 + length));
-      if (inflator.err) throw new Error("Invalid PNG compression.");
-    }
-    if (["IHDR", "PLTE", "tRNS", "IDAT", "IEND"].includes(type))
-      parts.push(bytes.subarray(p, p + length + 12));
-    p += length + 12;
-    if (type === "IEND") {
-      seenEnd = true;
-      break;
-    }
-  }
-  if (!seenEnd || !inflator.ended || inflator.err)
-    throw new Error("Incomplete PNG.");
-  const result = new Uint8Array(parts.reduce((sum, p) => sum + p.length, 0));
-  let offset = 0;
-  for (const p of parts) {
-    result.set(p, offset);
-    offset += p.length;
-  }
-  return result;
-}
-export function analyzeImage(bytes: Uint8Array, target: Target, mode = "full") {
+export async function analyzeImage(bytes: Uint8Array, target: Target, mode = "full", metadata?: Header & { fileSize: number }) {
   if (bytes.length > MAX_BYTES)
     throw new Error("Image exceeds the 8,000,000 byte limit.");
-  const h = imageHeader(bytes),
-    criteria = headersCriteria(h.width, h.height, bytes.length, h.format),
+  const h = metadata ?? imageHeader(bytes),
+    criteria = headersCriteria(h.width, h.height, metadata?.fileSize ?? bytes.length, h.format),
     notes: string[] = [];
   const full =
     mode === "full" && h.format !== "webp" && h.width * h.height <= (h.format === "png" ? 1_000_000 : 4_000_000);
   if (full) {
     let rgba: Uint8Array | Uint8ClampedArray;
     try {
-      if (h.format === "jpeg") {
-        rgba = jpeg.decode(bytes, {
-          useTArray: true,
-          maxResolutionInMP: 4,
-          maxMemoryUsageInMB: 64,
-        }).data;
-      } else {
-        const p = decodePng(safePng(bytes, h), { checkCrc: true });
-        if (p.depth !== 8)
-          throw new Error("Only 8-bit PNG full analysis is supported.");
-        const source = p.palette ? convertIndexedToRgb(p) : p.data,
-          channels = p.palette ? p.palette[0].length : p.channels;
-        rgba = new Uint8Array(h.width * h.height * 4);
-        for (let i = 0; i < h.width * h.height; i++) {
-          const k = i * channels,
-            o = i * 4;
-          rgba[o] = source[k];
-          rgba[o + 1] = channels <= 2 ? source[k] : source[k + 1];
-          rgba[o + 2] = channels <= 2 ? source[k] : source[k + 2];
-          rgba[o + 3] =
-            channels === 2
-              ? source[k + 1]
-              : channels === 4
-                ? source[k + 3]
-                : 255;
-          if (
-            !p.palette &&
-            p.transparency &&
-            p.transparency.every((v, j) => v === source[k + j])
-          )
-            rgba[o + 3] = 0;
-        }
-      }
+      rgba = h.format === "jpeg"
+        ? (await import("./jpeg-decoder")).decodeJpegPixels(bytes)
+        : (h.width * h.height <= 16_384 ? await nativePng(bytes, h.width, h.height) : undefined) ??
+          (await import("./decoders")).decodePngPixels(bytes, h);
     } catch {
       throw new Error(
         "Image pixels could not be decoded safely. Re-export as an 8-bit JPEG/PNG, or use header-only mode.",
       );
     }
-    const scale = Math.min(1, 256 / Math.max(h.width, h.height)),
+    const scale = Math.min(1, 64 / Math.max(h.width, h.height)),
       w = Math.max(1, Math.round(h.width * scale)),
       height = Math.max(1, Math.round(h.height * scale)),
       small = new Uint8Array(w * height * 4);
@@ -344,11 +303,13 @@ export function analyzeImage(bytes: Uint8Array, target: Target, mode = "full") {
           (Math.min(h.height - 1, Math.floor(y / scale)) * h.width +
             Math.min(h.width - 1, Math.floor(x / scale))) *
           4;
-        small.set(rgba.subarray(from, from + 4), (y * w + x) * 4);
+        const to = (y * w + x) * 4;
+        small[to] = rgba[from]; small[to + 1] = rgba[from + 1];
+        small[to + 2] = rgba[from + 2]; small[to + 3] = rgba[from + 3];
       }
     criteria.push(...pixelCriteria(small, w, height));
     notes.push(
-      "Pixel metrics use a nearest-neighbor grid with a maximum 256 px long side. Whole-image heuristics can be affected by clothing and background; inspect the original. EXIF orientation is not applied; re-export upright.",
+      "Pixel metrics use a nearest-neighbor grid with a maximum 64 px long side. Whole-image heuristics can be affected by clothing and background; inspect the original. EXIF orientation is not applied; re-export upright.",
     );
   } else {
     const reason =
@@ -393,10 +354,23 @@ export function analyzeImage(bytes: Uint8Array, target: Target, mode = "full") {
   };
 }
 
+function logBindingError(e: unknown, stage: string, expected_width = 0, expected_height = 0, actual_width = 0, actual_height = 0) {
+  // Never serialize exception stacks, input bytes or request context.
+  const message = e instanceof Error ? e.message : "Unknown binding failure";
+  console.log(JSON.stringify({
+    evt: "images_binding_error", stage,
+    expected_width, expected_height, actual_width, actual_height,
+    name: e instanceof Error ? e.name.slice(0, 80) : "Error",
+    message: message.replace(/(?:https?:\/\/|data:)[^\s]+/gi, "[redacted]")
+      .replace(/[A-Za-z0-9+/=]{80,}/g, "[redacted]").slice(0, 200),
+  }));
+}
+
 // Structural subset makes the optional platform binding easy to test without a service.
 export interface ImageResizer {
+  info(stream: ReadableStream<Uint8Array>): Promise<{ format: string; fileSize?: number; width?: number; height?: number }>;
   input(stream: ReadableStream<Uint8Array>): {
-    transform(options: { width: number; height: number }): {
+    transform(options: { width: number; height: number; fit: "scale-down" }): {
       output(options: { format: "image/png" }): Promise<{ response(): Response }>;
     };
   };
@@ -404,35 +378,50 @@ export interface ImageResizer {
 export async function analyzeAuto(bytes: Uint8Array, target: Target, mode = "auto", images?: ImageResizer) {
   if (bytes.length > MAX_BYTES) throw new Error("Image exceeds the 8,000,000 byte limit.");
   const h = imageHeader(bytes);
-  if (mode === "header-only" || mode === "full") return analyzeImage(bytes, target, mode);
+  if (!Number.isInteger(h.width) || !Number.isInteger(h.height) || h.width <= 0 || h.height <= 0 ||
+      h.width > 65535 || h.height > 65535 || h.width * h.height > 100_000_000)
+    throw new Error("Image dimensions exceed the safety cap.");
+  const size = bytes.length;
+  const headerResult = () => analyzeImage(bytes, target, "header-only", { ...h, fileSize: size });
+  if (mode === "header-only") return headerResult();
+  if (mode === "full") return analyzeImage(bytes, target, mode);
   let failure = "Images binding is unavailable.";
-  // Small native inputs avoid a transformation entirely. Keep this conservative for CPU.
-  if (h.format !== "webp" && h.width * h.height <= 16_384)
-    return analyzeImage(bytes, target, "full");
   if (images) {
+    let stage = "transform";
+    let expected_width = 0, expected_height = 0, actual_width = 0, actual_height = 0;
     try {
-      const scale = Math.min(1, 128 / Math.max(h.width, h.height));
+      const scale = Math.min(1, 64 / Math.max(h.width, h.height));
       const width = Math.max(1, Math.round(h.width * scale));
       const height = Math.max(1, Math.round(h.height * scale));
+      expected_width = width; expected_height = height;
+      // Both input paths enqueue the same bounded buffer without a Response copy.
       const stream = new ReadableStream<Uint8Array>({ start(c) { c.enqueue(bytes); c.close(); } });
-      const output = await images.input(stream).transform({ width, height }).output({ format: "image/png" });
+      const output = await images.input(stream).transform({ width: 64, height: 64, fit: "scale-down" }).output({ format: "image/png" });
+      stage = "response";
       const response = output.response();
-      if (!response.ok) throw new Error("Transformation failed.");
+      if (!response.ok) throw new Error(`Transformation returned HTTP ${response.status}.`);
       const small = await readLimited(response.body, 150_000);
+      stage = "dimensions";
       const sh = imageHeader(small);
-      if (sh.format !== "png" || sh.width !== width || sh.height !== height)
+      actual_width = sh.width; actual_height = sh.height;
+      if (sh.format !== "png" || sh.width <= 0 || sh.height <= 0 || sh.width > 64 || sh.height > 64)
         throw new Error("Unexpected transformation dimensions.");
-      const result = analyzeImage(small, target, "full");
-      result.criteria.splice(0, 3, ...headersCriteria(h.width, h.height, bytes.length, h.format));
+      stage = "decode";
+      const result = await analyzeImage(small, target, "full");
+      result.criteria.splice(0, 3, ...headersCriteria(h.width, h.height, size, h.format));
       Object.assign(result, summarize(result.criteria));
       result.analysis_mode = "images-binding";
-      result.notes = ["Pixel metrics use an Images binding resize to a maximum 128 px long side. Original dimensions, format and byte size are used for header checks. Sharpness detects coarse blur only; resizing removes fine focus detail. No JPEG DC/AC coefficient analysis is performed. Re-export upright; orientation and color handling can differ between local and production resizing."];
+      result.notes = ["Pixel metrics use an Images binding resize to a maximum 64 px long side. Original dimensions, format and byte size are used for header checks. Sharpness detects coarse blur only; resizing removes fine focus detail. No JPEG DC/AC coefficient analysis is performed. Re-export upright; orientation and color handling can differ between local and production resizing."];
       return result;
-    } catch {
+    } catch (e) {
+      logBindingError(e, stage, expected_width, expected_height, actual_width, actual_height);
       failure = "Images transformation or small-image decode failed (including possible quota exhaustion).";
     }
   }
-  const result = analyzeImage(bytes, target, "header-only");
+  // Only tiny JPEG/PNG inputs have a bounded local pixel fallback.
+  if (h.format !== "webp" && h.width * h.height <= 16_384)
+    return analyzeImage(bytes, target, "full");
+  const result = await headerResult();
   result.notes = [failure + " No bounded pixel path is available for this input; header-only checks were used. Try a JPEG/PNG no larger than 128 × 128 pixels."];
   return result;
 }

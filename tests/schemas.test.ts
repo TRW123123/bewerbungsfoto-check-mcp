@@ -4,12 +4,12 @@ import { tools } from "../src/tools";
 import { analyzeImage } from "../src/images";
 import { requirements } from "../src/scoring";
 import { png } from "./fixtures";
-it("successful results match advertised output schemas", () => {
+it("successful results match advertised output schemas", async () => {
   const ajv = new Ajv({ strict: false });
   for (const mode of ["full", "header-only"]) {
     const validate = ajv.compile(tools[0].outputSchema);
     expect(
-      validate(analyzeImage(png(), "all", mode)),
+      validate(await analyzeImage(png(), "all", mode)),
       JSON.stringify(validate.errors),
     ).toBe(true);
   }

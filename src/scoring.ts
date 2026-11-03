@@ -41,7 +41,7 @@ export function requirements(target: Target) {
       contrast: "Luminance standard deviation 32–84 and P95–P5 >=105",
       background: "Border unrest index <=4.5 pass; <=10.5 warn",
       sharpness:
-        "Experimental recommendation: Laplacian variance >=100 pass; >=30 warn on <=256 px grid",
+        "Experimental recommendation: Laplacian variance >=100 pass; >=30 warn on <=64 px grid",
     },
     checklist: [
       "Use the original camera file; avoid enlarging a small image.",
@@ -140,9 +140,9 @@ export function pixelCriteria(
   for (let p = 0; p < n; p++) {
     const i = p * 4,
       a = data[i + 3] / 255;
-    const r = Math.round(data[i] * a + 255 * (1 - a)),
-      g = Math.round(data[i + 1] * a + 255 * (1 - a)),
-      b = Math.round(data[i + 2] * a + 255 * (1 - a));
+    const r = a === 1 ? data[i] : Math.round(data[i] * a + 255 * (1 - a)),
+      g = a === 1 ? data[i + 1] : Math.round(data[i + 1] * a + 255 * (1 - a)),
+      b = a === 1 ? data[i + 2] : Math.round(data[i + 2] * a + 255 * (1 - a));
     const y = 0.2126 * r + 0.7152 * g + 0.0722 * b;
     lum[p] = y;
     sum += y;
@@ -187,6 +187,10 @@ export function pixelCriteria(
     ln = 0,
     centerEdge = 0,
     cn = 0;
+  const borderBottom = Math.min(height - 1, Math.max(1, Math.floor(height * 0.78))),
+    borderTop = Math.max(1, Math.floor(height * 0.16)),
+    borderLeft = Math.max(1, Math.floor(width * 0.18)),
+    borderRight = Math.max(1, Math.min(width - 1, Math.floor(width * 0.82)));
   for (let y = 1; y < height - 1; y++)
     for (let x = 1; x < width - 1; x++) {
       const i = y * width + x,
@@ -203,10 +207,10 @@ export function pixelCriteria(
       ls2 += lap * lap;
       ln++;
       if (
-        y < Math.min(height - 1, Math.max(1, Math.floor(height * 0.78))) &&
-        (y <= Math.max(1, Math.floor(height * 0.16)) ||
-          x <= Math.max(1, Math.floor(width * 0.18)) ||
-          x >= Math.max(1, Math.min(width - 1, Math.floor(width * 0.82))))
+        y < borderBottom &&
+        (y <= borderTop ||
+          x <= borderLeft ||
+          x >= borderRight)
       ) {
         edge += grad;
         bs += v;
@@ -222,7 +226,7 @@ export function pixelCriteria(
   const lapVar = ln ? Math.max(0, ls2 / ln - (ls / ln) ** 2) : 0;
   const rgb = valid ? [R / valid, G / valid, B / valid] : [128, 128, 128],
     gray = (rgb[0] + rgb[1] + rgb[2]) / 3,
-    shift = Math.max(...rgb.map((v) => Math.abs(v - gray))),
+    shift = Math.max(Math.abs(rgb[0] - gray), Math.abs(rgb[1] - gray), Math.abs(rgb[2] - gray)),
     warm = rgb[0] - rgb[2];
   const br: Status =
     pct < 26 || dc > 28 || pct > 84 || bc > 32

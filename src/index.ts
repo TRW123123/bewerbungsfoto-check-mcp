@@ -2,7 +2,7 @@ import {
   analyzeAuto,
   type ImageResizer,
   base64Image,
-  fetchImage,
+  analyzeUrl,
   MAX_REQUEST_BYTES,
   readLimited,
 } from "./images";
@@ -108,16 +108,10 @@ export async function callTool(name: unknown, args: unknown, env: Env) {
         throw new Error(
           "image_base64 must be a nonempty base64 string within the 8 MB image limit.",
         );
-      const bytes =
-        typeof a.image_url === "string"
-          ? await fetchImage(a.image_url)
-          : base64Image(a.image_base64 as string);
-      result = await analyzeAuto(
-        bytes,
-        target as Target,
-        env.ANALYSIS_MODE ?? "auto",
-        env.IMAGES,
-      );
+      result = typeof a.image_url === "string"
+        ? await analyzeUrl(a.image_url, target as Target, env.ANALYSIS_MODE ?? "auto", env.IMAGES)
+        : await analyzeAuto(base64Image(a.image_base64 as string), target as Target,
+            env.ANALYSIS_MODE ?? "auto", env.IMAGES);
     }
     ok = true;
     return {
