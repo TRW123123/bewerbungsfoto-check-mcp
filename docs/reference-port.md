@@ -1,0 +1,11 @@
+# Reference port and provenance
+
+Read-only source: `/home/box/seitenbau/Profilfoto-Landingpage/public/tools/bewerbungsfoto-check/app.js`; explanatory data: `astro-src/data/bewerbungsfoto-check-tool.json`; wrapper: `astro-src/pages/tools/bewerbungsfoto-check/index.astro`. No reference files were modified.
+
+The port preserves resolution 1200/1500 and 600/750 edge thresholds; portrait ratios 0.75, 2/3, 0.8 ±0.045, square ±0.05, warn portrait range 0.52–0.94; luminance coefficients 0.2126/0.7152/0.0722; clipping thresholds 16/242; brightness fail mean <26 or >84 percent, dark >28 or bright >32 percent; warn mean <35 or >76, dark >16 or bright >20. Contrast fails std <22 or P95–P5 <70; warns std <32, spread <105, or std >84. Color cast fails red-blue >38 or max channel shift >28; warns red-blue >24 or <-16, max shift >19. Color means exclude luminance outside 25–235. Transparent pixels blend onto white.
+
+Background uses top 16%, side 18%, excludes bottom 22%; index = mean border gradient ×1.2 + max(0, border luminance std −8) ×0.45. Pass <=4.5, warn <=10.5. Center edge mean is added for comparison and does not affect the reference threshold. English advice translates the reference's branches. Reference calls mean-channel differences a color cast; these can be influenced by clothing/background, so no personal inference is made.
+
+Explanatory content recommends 600×800 digital and 1200×1600 for larger print, while evaluator edges differ as above. The JSON table says approximately 35–72% brightness; executable logic permits up to 76%, which this port follows. Square for LinkedIn/XING and portrait for applications are recommendations in the reference, not official upload specifications. No official platform dimensions or file-size ceilings are claimed.
+
+Added recommendations: Laplacian variance >=100 pass, >=30 warn on a maximum 256 px nearest-neighbor grid; 8,000,000 bytes service cap; 4 MP full-decode safety cap. These are service choices/experimental heuristics, not platform specs. The equal-weight score (pass 100, warn 60, fail 0, unchecked excluded) is new; verdict severity follows the reference. Full decoding happens before grid sampling, so reducing metric dimensions does not remove decoder CPU cost. EXIF rotation is not applied. No face/skin heuristic is attempted.
