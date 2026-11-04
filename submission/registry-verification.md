@@ -24,14 +24,14 @@ HTTP alternative:
 
 ## Future operator commands — DO NOT execute during preparation
 
-The official CLI documented on the review date accepts `--private-key` as a hexadecimal seed, not a PEM filename. The commands below read an operator-prepared hex seed file; the filename is a placeholder. A literal path must not be passed as the seed. The PEM and hex seed must never enter this repository. Disable shell tracing and avoid environments that log command arguments; the CLI receives the seed in its argument list.
+The official CLI documented on the review date accepts `--private-key` as a hexadecimal seed, not a PEM filename. The commands below read an operator-prepared hex seed file; the hex seed lives at /home/box/.secrets/mcp-registry-profilfoto-ki.de-ed25519.hex (PEM: /home/box/.secrets/mcp-registry-profilfoto-ki.de-ed25519.pem). A literal path must not be passed as the seed. The PEM and hex seed must never enter this repository. Disable shell tracing and avoid environments that log command arguments; the CLI receives the seed in its argument list.
 
 ```sh
 # Choose DNS after its public proof is reachable:
-mcp-publisher login dns --domain profilfoto-ki.de --private-key "$(cat /home/box/.secrets/REGISTRY_PRIVATE_KEY_HEX)"
+mcp-publisher login dns --domain profilfoto-ki.de --private-key "$(cat /home/box/.secrets/mcp-registry-profilfoto-ki.de-ed25519.hex)"
 
 # OR choose HTTP after its public proof is reachable:
-mcp-publisher login http --domain profilfoto-ki.de --private-key "$(cat /home/box/.secrets/REGISTRY_PRIVATE_KEY_HEX)"
+mcp-publisher login http --domain profilfoto-ki.de --private-key "$(cat /home/box/.secrets/mcp-registry-profilfoto-ki.de-ed25519.hex)"
 
 # Only after explicit publishing authorization, validation and v0.1.2 deployment:
 mcp-publisher publish
