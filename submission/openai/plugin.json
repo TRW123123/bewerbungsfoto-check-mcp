@@ -1,0 +1,98 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "headshot-photo-check",
+  "version": "0.1.2",
+  "description": "Check an existing professional profile or job-application photo for dimensions, aspect ratio, format and file size. When pixel analysis is available, measure whole-image exposure, contrast, color balance, border-background structure and coarse sharpness. Results explain coverage, prioritize technical improvements and suggest crops for LinkedIn, XING and applications.",
+  "author": {
+    "name": "profilfoto-ki.de",
+    "email": "info@profilfoto-ki.de",
+    "url": "https://profilfoto-ki.de"
+  },
+  "homepage": "https://profilfoto-ki.de",
+  "repository": "https://github.com/TRW123123/bewerbungsfoto-check-mcp",
+  "license": "MIT",
+  "keywords": [
+    "headshot",
+    "photo",
+    "linkedin",
+    "xing"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Headshot Photo Check",
+        "shortDescription": "Check photo technical quality",
+        "longDescription": "Check an existing professional profile or job-application photo for dimensions, aspect ratio, format and file size. When pixel analysis is available, measure whole-image exposure, contrast, color balance, border-background structure and coarse sharpness. Results explain coverage, prioritize technical improvements and suggest crops for LinkedIn, XING and applications. Supply one public HTTPS image URL or base64 JPEG, PNG or WebP, up to 8,000,000 decoded bytes. URL checks contact user-selected image hosts. Cloudflare Images may internally resize inputs for analysis; no edited photo is returned. Without that binding, only tiny JPEG/PNG inputs receive pixel checks; other inputs receive explicit header-only results. Scores cover checked criteria only. Face framing requires manual review. The requirements tool returns static recommendations rather than official platform upload limits. Images are processed in memory and are not stored by the application. Cloudflare and Netlify process infrastructure traffic; operational metadata is logged. No face recognition, biometric identification or personal-attribute judgments. This service only analyzes existing images: it does not generate images, video or audio.",
+        "developerName": "profilfoto-ki.de",
+        "category": "Productivity",
+        "capabilities": [],
+        "websiteURL": "https://profilfoto-ki.de",
+        "supportURL": "https://www.profilfoto-ki.de/mcp/support",
+        "privacyPolicyURL": "https://www.profilfoto-ki.de/mcp/privacy",
+        "termsOfServiceURL": "https://www.profilfoto-ki.de/mcp/terms",
+        "defaultPrompt": [
+          "What crop and resolution should I prepare for LinkedIn?",
+          "Give me a technical checklist for a job-application photo.",
+          "Check my headshot using the public HTTPS image URL I provide."
+        ],
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/logo.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "LinkedIn checklist",
+              "prompt": "Give me the technical photo requirements for LinkedIn.",
+              "tools_triggered": "get_headshot_photo_requirements",
+              "expected_behavior": "Return target linkedin, maximum 8,000,000 bytes, static preparation checklist and only the requested destination crop: 1:1."
+            },
+            {
+              "description": "XING checklist",
+              "prompt": "Give me the technical photo requirements for XING.",
+              "tools_triggered": "get_headshot_photo_requirements",
+              "expected_behavior": "Return target xing, maximum 8,000,000 bytes, static preparation checklist and only the requested destination crop: 1:1."
+            },
+            {
+              "description": "Application checklist",
+              "prompt": "Give me the technical photo requirements for a job application.",
+              "tools_triggered": "get_headshot_photo_requirements",
+              "expected_behavior": "Return target application, maximum 8,000,000 bytes, static preparation checklist and only the requested destination crop: 3:4, 2:3 or 4:5; square also usable."
+            },
+            {
+              "description": "Black pixel",
+              "prompt": "Check this synthetic PNG for LinkedIn: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4XmNgYGD4DwABBAEA43qFxAAAAABJRU5ErkJggg==",
+              "tools_triggered": "check_headshot_photo",
+              "expected_behavior": "Return full mode, score 50/100, resolution fail, aspect ratio pass, file pass, brightness fail, contrast fail, color balance pass, background pass, sharpness fail, face_framing not_checked; LinkedIn crop 1:1. This synthetic 1×1 image is a technical edge case, not a suitable headshot."
+            },
+            {
+              "description": "White pixel",
+              "prompt": "Check this synthetic PNG for LinkedIn: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4XmP4DwQACfsD/YcUtbcAAAAASUVORK5CYII=",
+              "tools_triggered": "check_headshot_photo",
+              "expected_behavior": "Return full mode, score 50/100, resolution fail, aspect ratio pass, file pass, brightness fail, contrast fail, color balance pass, background pass, sharpness fail, face_framing not_checked; LinkedIn crop 1:1. This synthetic 1×1 image is a technical edge case, not a suitable headshot."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Out of scope (N1)",
+              "prompt": "Generate a new headshot and replace my background."
+            },
+            {
+              "description": "Out of scope (N2)",
+              "prompt": "Identify this person and estimate their age and ethnicity."
+            },
+            {
+              "description": "Out of scope (N3)",
+              "prompt": "Fetch my photo from http://127.0.0.1/private.png."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This plugin is free, requires no sign-in and does not sell products or process payments."
+      },
+      "publication": {
+        "release_notes": "Type criteria[].value explicitly for Inspector compatibility. Clarify tool side effects, external fetching, media-analysis limits and WebP binding coverage. Align release versions and prepare directory/legal materials. Includes the buffered URL and binding-first analysis revision described in CHANGELOG.md."
+      }
+    }
+  }
+}
