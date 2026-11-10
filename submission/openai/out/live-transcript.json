@@ -1,0 +1,500 @@
+{
+ "date": "2026-11-10T09:44:30+01:00",
+ "endpoint": "https://mcp.profilfoto-ki.de/mcp",
+ "calls": [
+  {
+   "id": "P1",
+   "prompt": "Give me the technical photo requirements for LinkedIn.",
+   "tool": "get_headshot_photo_requirements",
+   "arguments": {
+    "target": "linkedin"
+   },
+   "response": {
+    "jsonrpc": "2.0",
+    "id": 10,
+    "result": {
+     "structuredContent": {
+      "target": "linkedin",
+      "recommendations": {
+       "digital": "600 × 800 px; evaluator warns at short edge >=600 and long edge >=750",
+       "print": "1200 × 1600 px recommended; evaluator passes at short edge >=1200 and long edge >=1500",
+       "crops": {
+        "linkedin": "1:1"
+       },
+       "formats": "JPEG or PNG; WebP pixel metrics require the optional Images binding, otherwise dimensions only",
+       "max_bytes": 8000000,
+       "brightness": "35–76% mean luminance; dark clipping <=16%, bright clipping <=20%",
+       "contrast": "Luminance standard deviation 32–84 and P95–P5 >=105",
+       "background": "Border unrest index <=4.5 pass; <=10.5 warn",
+       "sharpness": "Experimental recommendation: Laplacian variance >=100 pass; >=30 warn on <=64 px grid"
+      },
+      "checklist": [
+       "Use the original camera file; avoid enlarging a small image.",
+       "Use soft, frontal daylight and avoid clipped highlights or shadows.",
+       "Clean the camera lens and avoid backlighting.",
+       "Check white balance against a neutral wall or shirt collar.",
+       "Choose a plain or softly blurred background.",
+       "Manually check head and shoulders, eyes near the upper third and room around the head."
+      ],
+      "note": "Recommendations from the reference tool, not official platform upload specifications. No face detection or biometric identification."
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "Technical photo recommendations and checklist are in structuredContent."
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "P2",
+   "prompt": "Give me the technical photo requirements for XING.",
+   "tool": "get_headshot_photo_requirements",
+   "arguments": {
+    "target": "xing"
+   },
+   "response": {
+    "jsonrpc": "2.0",
+    "id": 11,
+    "result": {
+     "structuredContent": {
+      "target": "xing",
+      "recommendations": {
+       "digital": "600 × 800 px; evaluator warns at short edge >=600 and long edge >=750",
+       "print": "1200 × 1600 px recommended; evaluator passes at short edge >=1200 and long edge >=1500",
+       "crops": {
+        "xing": "1:1"
+       },
+       "formats": "JPEG or PNG; WebP pixel metrics require the optional Images binding, otherwise dimensions only",
+       "max_bytes": 8000000,
+       "brightness": "35–76% mean luminance; dark clipping <=16%, bright clipping <=20%",
+       "contrast": "Luminance standard deviation 32–84 and P95–P5 >=105",
+       "background": "Border unrest index <=4.5 pass; <=10.5 warn",
+       "sharpness": "Experimental recommendation: Laplacian variance >=100 pass; >=30 warn on <=64 px grid"
+      },
+      "checklist": [
+       "Use the original camera file; avoid enlarging a small image.",
+       "Use soft, frontal daylight and avoid clipped highlights or shadows.",
+       "Clean the camera lens and avoid backlighting.",
+       "Check white balance against a neutral wall or shirt collar.",
+       "Choose a plain or softly blurred background.",
+       "Manually check head and shoulders, eyes near the upper third and room around the head."
+      ],
+      "note": "Recommendations from the reference tool, not official platform upload specifications. No face detection or biometric identification."
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "Technical photo recommendations and checklist are in structuredContent."
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "P3",
+   "prompt": "Give me the technical photo requirements for a job application.",
+   "tool": "get_headshot_photo_requirements",
+   "arguments": {
+    "target": "application"
+   },
+   "response": {
+    "jsonrpc": "2.0",
+    "id": 12,
+    "result": {
+     "structuredContent": {
+      "target": "application",
+      "recommendations": {
+       "digital": "600 × 800 px; evaluator warns at short edge >=600 and long edge >=750",
+       "print": "1200 × 1600 px recommended; evaluator passes at short edge >=1200 and long edge >=1500",
+       "crops": {
+        "application": "3:4, 2:3 or 4:5; square also usable"
+       },
+       "formats": "JPEG or PNG; WebP pixel metrics require the optional Images binding, otherwise dimensions only",
+       "max_bytes": 8000000,
+       "brightness": "35–76% mean luminance; dark clipping <=16%, bright clipping <=20%",
+       "contrast": "Luminance standard deviation 32–84 and P95–P5 >=105",
+       "background": "Border unrest index <=4.5 pass; <=10.5 warn",
+       "sharpness": "Experimental recommendation: Laplacian variance >=100 pass; >=30 warn on <=64 px grid"
+      },
+      "checklist": [
+       "Use the original camera file; avoid enlarging a small image.",
+       "Use soft, frontal daylight and avoid clipped highlights or shadows.",
+       "Clean the camera lens and avoid backlighting.",
+       "Check white balance against a neutral wall or shirt collar.",
+       "Choose a plain or softly blurred background.",
+       "Manually check head and shoulders, eyes near the upper third and room around the head."
+      ],
+      "note": "Recommendations from the reference tool, not official platform upload specifications. No face detection or biometric identification."
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "Technical photo recommendations and checklist are in structuredContent."
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "P4",
+   "prompt": "Check this synthetic PNG for LinkedIn: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4XmNgYGD4DwABBAEA43qFxAAAAABJRU5ErkJggg==",
+   "tool": "check_headshot_photo",
+   "arguments": {
+    "target": "linkedin",
+    "image_base64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4XmNgYGD4DwABBAEA43qFxAAAAABJRU5ErkJggg=="
+   },
+   "response": {
+    "jsonrpc": "2.0",
+    "id": 13,
+    "result": {
+     "structuredContent": {
+      "overall_score": 50,
+      "verdict": "Technical issues detected",
+      "improvement_tips": [
+       {
+        "priority": 1,
+        "criterion": "resolution",
+        "tip": "Too few pixels can look blurred or pixelated. Use the original camera file with at least 600 × 800 pixels."
+       },
+       {
+        "priority": 2,
+        "criterion": "brightness",
+        "tip": "Strong underexposure loses detail in shadows. Use frontal daylight or gently raise exposure."
+       },
+       {
+        "priority": 3,
+        "criterion": "contrast",
+        "tip": "Low tonal depth can look hazy. Clean the camera lens and avoid backlighting."
+       },
+       {
+        "priority": 4,
+        "criterion": "sharpness",
+        "tip": "Inspect eyes and clothing edges at original size; use stable focus and avoid motion blur. Texture can inflate this heuristic; it cannot prove focus."
+       }
+      ],
+      "target": "linkedin",
+      "analysis_mode": "full",
+      "score_scope": "Equal-weight technical heuristic over checked criteria only; not a judgment of the person or a guarantee of acceptance.",
+      "criteria": [
+       {
+        "id": "resolution",
+        "label": "Resolution and print suitability",
+        "status": "fail",
+        "value": {
+         "width": 1,
+         "height": 1
+        },
+        "threshold": "pass: short >=1200, long >=1500; warn: short >=600, long >=750",
+        "tip": "Too few pixels can look blurred or pixelated. Use the original camera file with at least 600 × 800 pixels."
+       },
+       {
+        "id": "aspect_ratio",
+        "label": "Aspect ratio",
+        "status": "pass",
+        "value": 1,
+        "threshold": "portrait 3:4, 2:3, 4:5 ±0.045; square ±0.05",
+        "tip": "A classic portrait fits CV templates; a square suits professional networks and round or square frames."
+       },
+       {
+        "id": "file",
+        "label": "File size and format",
+        "status": "pass",
+        "value": {
+         "bytes": 70,
+         "format": "png"
+        },
+        "threshold": "service limit 8,000,000 bytes; pixel coverage depends on decoder or Images binding; no platform upload limit claimed",
+        "tip": "Keep an original copy and export JPEG or PNG within the destination upload limit."
+       },
+       {
+        "id": "brightness",
+        "label": "Brightness and exposure",
+        "status": "fail",
+        "value": {
+         "mean_luminance": 0,
+         "percent": 0,
+         "dark_clip_percent": 100,
+         "bright_clip_percent": 0
+        },
+        "threshold": "fail: mean <26% or >84%, dark clip >28%, bright clip >32%; warn: mean <35% or >76%, dark >16%, bright >20%",
+        "tip": "Strong underexposure loses detail in shadows. Use frontal daylight or gently raise exposure."
+       },
+       {
+        "id": "contrast",
+        "label": "Contrast and dynamic range",
+        "status": "fail",
+        "value": {
+         "std_dev": 0,
+         "p95_minus_p5": 0
+        },
+        "threshold": "fail: std <22 or spread <70; warn: std <32 or spread <105 or std >84",
+        "tip": "Low tonal depth can look hazy. Clean the camera lens and avoid backlighting."
+       },
+       {
+        "id": "color_balance",
+        "label": "Color cast and white balance",
+        "status": "pass",
+        "value": {
+         "rgb_mean": [
+          128,
+          128,
+          128
+         ],
+         "max_channel_deviation": 0,
+         "red_minus_blue": 0
+        },
+        "threshold": "fail: red-blue >38 or max deviation >28; warn: red-blue >24 or <-16 or max deviation >19",
+        "tip": "Color channels are balanced without a strong artificial color cast."
+       },
+       {
+        "id": "background",
+        "label": "Background calmness at border",
+        "status": "pass",
+        "value": {
+         "unrest_index": 0,
+         "border_edge_mean": 0,
+         "border_luminance_std": 0,
+         "center_edge_mean": 0
+        },
+        "threshold": "pass <=4.5; warn <=10.5; otherwise fail",
+        "tip": "Few hard contrast edges at the border keep attention on the subject."
+       },
+       {
+        "id": "sharpness",
+        "label": "Sharpness (experimental)",
+        "status": "fail",
+        "value": {
+         "laplacian_variance": 0
+        },
+        "threshold": "recommendation on sampled grid: pass >=100; warn >=30",
+        "tip": "Inspect eyes and clothing edges at original size; use stable focus and avoid motion blur. Texture can inflate this heuristic; it cannot prove focus."
+       },
+       {
+        "id": "face_framing",
+        "label": "Face size and framing",
+        "status": "not_checked",
+        "value": null,
+        "threshold": "Manual review required",
+        "tip": "No reliable face detector is used. Manually check head and shoulders, eyes near the upper third and sufficient space around the head."
+       }
+      ],
+      "recommended_crops": {
+       "linkedin": "1:1"
+      },
+      "notes": [
+       "Pixel metrics use a nearest-neighbor grid with a maximum 64 px long side. Whole-image heuristics can be affected by clothing and background; inspect the original. EXIF orientation is not applied; re-export upright."
+      ]
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "Technical issues detected. Score 50/100 over checked criteria. See structuredContent for coverage and prioritized tips."
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "P5",
+   "prompt": "Check this synthetic PNG for LinkedIn: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4XmP4DwQACfsD/YcUtbcAAAAASUVORK5CYII=",
+   "tool": "check_headshot_photo",
+   "arguments": {
+    "target": "linkedin",
+    "image_base64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4XmP4DwQACfsD/YcUtbcAAAAASUVORK5CYII="
+   },
+   "response": {
+    "jsonrpc": "2.0",
+    "id": 14,
+    "result": {
+     "structuredContent": {
+      "overall_score": 50,
+      "verdict": "Technical issues detected",
+      "improvement_tips": [
+       {
+        "priority": 1,
+        "criterion": "resolution",
+        "tip": "Too few pixels can look blurred or pixelated. Use the original camera file with at least 600 × 800 pixels."
+       },
+       {
+        "priority": 2,
+        "criterion": "brightness",
+        "tip": "Large areas are overexposed. Check direct sunlight or strong flash for blown highlights."
+       },
+       {
+        "priority": 3,
+        "criterion": "contrast",
+        "tip": "Low tonal depth can look hazy. Clean the camera lens and avoid backlighting."
+       },
+       {
+        "priority": 4,
+        "criterion": "sharpness",
+        "tip": "Inspect eyes and clothing edges at original size; use stable focus and avoid motion blur. Texture can inflate this heuristic; it cannot prove focus."
+       }
+      ],
+      "target": "linkedin",
+      "analysis_mode": "full",
+      "score_scope": "Equal-weight technical heuristic over checked criteria only; not a judgment of the person or a guarantee of acceptance.",
+      "criteria": [
+       {
+        "id": "resolution",
+        "label": "Resolution and print suitability",
+        "status": "fail",
+        "value": {
+         "width": 1,
+         "height": 1
+        },
+        "threshold": "pass: short >=1200, long >=1500; warn: short >=600, long >=750",
+        "tip": "Too few pixels can look blurred or pixelated. Use the original camera file with at least 600 × 800 pixels."
+       },
+       {
+        "id": "aspect_ratio",
+        "label": "Aspect ratio",
+        "status": "pass",
+        "value": 1,
+        "threshold": "portrait 3:4, 2:3, 4:5 ±0.045; square ±0.05",
+        "tip": "A classic portrait fits CV templates; a square suits professional networks and round or square frames."
+       },
+       {
+        "id": "file",
+        "label": "File size and format",
+        "status": "pass",
+        "value": {
+         "bytes": 68,
+         "format": "png"
+        },
+        "threshold": "service limit 8,000,000 bytes; pixel coverage depends on decoder or Images binding; no platform upload limit claimed",
+        "tip": "Keep an original copy and export JPEG or PNG within the destination upload limit."
+       },
+       {
+        "id": "brightness",
+        "label": "Brightness and exposure",
+        "status": "fail",
+        "value": {
+         "mean_luminance": 254.99999999999997,
+         "percent": 99.99999999999999,
+         "dark_clip_percent": 0,
+         "bright_clip_percent": 100
+        },
+        "threshold": "fail: mean <26% or >84%, dark clip >28%, bright clip >32%; warn: mean <35% or >76%, dark >16%, bright >20%",
+        "tip": "Large areas are overexposed. Check direct sunlight or strong flash for blown highlights."
+       },
+       {
+        "id": "contrast",
+        "label": "Contrast and dynamic range",
+        "status": "fail",
+        "value": {
+         "std_dev": 0,
+         "p95_minus_p5": 0
+        },
+        "threshold": "fail: std <22 or spread <70; warn: std <32 or spread <105 or std >84",
+        "tip": "Low tonal depth can look hazy. Clean the camera lens and avoid backlighting."
+       },
+       {
+        "id": "color_balance",
+        "label": "Color cast and white balance",
+        "status": "pass",
+        "value": {
+         "rgb_mean": [
+          128,
+          128,
+          128
+         ],
+         "max_channel_deviation": 0,
+         "red_minus_blue": 0
+        },
+        "threshold": "fail: red-blue >38 or max deviation >28; warn: red-blue >24 or <-16 or max deviation >19",
+        "tip": "Color channels are balanced without a strong artificial color cast."
+       },
+       {
+        "id": "background",
+        "label": "Background calmness at border",
+        "status": "pass",
+        "value": {
+         "unrest_index": 0,
+         "border_edge_mean": 0,
+         "border_luminance_std": 0,
+         "center_edge_mean": 0
+        },
+        "threshold": "pass <=4.5; warn <=10.5; otherwise fail",
+        "tip": "Few hard contrast edges at the border keep attention on the subject."
+       },
+       {
+        "id": "sharpness",
+        "label": "Sharpness (experimental)",
+        "status": "fail",
+        "value": {
+         "laplacian_variance": 0
+        },
+        "threshold": "recommendation on sampled grid: pass >=100; warn >=30",
+        "tip": "Inspect eyes and clothing edges at original size; use stable focus and avoid motion blur. Texture can inflate this heuristic; it cannot prove focus."
+       },
+       {
+        "id": "face_framing",
+        "label": "Face size and framing",
+        "status": "not_checked",
+        "value": null,
+        "threshold": "Manual review required",
+        "tip": "No reliable face detector is used. Manually check head and shoulders, eyes near the upper third and sufficient space around the head."
+       }
+      ],
+      "recommended_crops": {
+       "linkedin": "1:1"
+      },
+      "notes": [
+       "Pixel metrics use a nearest-neighbor grid with a maximum 64 px long side. Whole-image heuristics can be affected by clothing and background; inspect the original. EXIF orientation is not applied; re-export upright."
+      ]
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "Technical issues detected. Score 50/100 over checked criteria. See structuredContent for coverage and prioritized tips."
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "initialize": {
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+   "protocolVersion": "2025-03-26",
+   "capabilities": {
+    "tools": {
+     "listChanged": false
+    }
+   },
+   "serverInfo": {
+    "name": "bewerbungsfoto-check",
+    "title": "Headshot Photo Check",
+    "version": "0.1.2",
+    "websiteUrl": "https://profilfoto-ki.de"
+   },
+   "instructions": "Technical checks only. Results describe checked coverage and limitations."
+  }
+ },
+ "tools": [
+  {
+   "name": "check_headshot_photo",
+   "annotations": {
+    "title": "Check headshot photo",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "get_headshot_photo_requirements",
+   "annotations": {
+    "title": "Get headshot requirements",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  }
+ ]
+}
