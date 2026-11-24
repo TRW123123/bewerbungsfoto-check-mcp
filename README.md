@@ -2,9 +2,9 @@
 
 A small English-language remote MCP server for checking the technical quality of professional profile and job-application photos. It turns measurable image issues into prioritized advice, without judging the person pictured. MIT licensed; no account, API key or paid analysis API.
 
-## Status: public repository, live endpoint, listed on Glama
+## Status: public repository, live endpoint, listed on Glama and in the official MCP Registry
 
-The GitHub repository is public: <https://github.com/TRW123123/bewerbungsfoto-check-mcp>. The MCP endpoint **https://mcp.profilfoto-ki.de/mcp** is live (`GET /health` returned HTTP 200 with `{"status":"ok"}` on 2026-11-19, 22:25 CET); the health check does not report a version, so no deployed version is claimed here (`package.json` and `server.json` are at 0.1.2). Delivery runs via the Netlify proxy site `mcp-profilfoto-proxy` in front of the Cloudflare Worker. The server is listed on Glama: <https://glama.ai/mcp/servers/trw123123/bewerbungsfoto-check-mcp> (checked 2026-11-19). `server.json` proposes `de.profilfoto-ki/headshot-check`; no Registry publication was performed. See [submission materials and remaining operator actions](submission/README.md).
+The GitHub repository is public: <https://github.com/TRW123123/bewerbungsfoto-check-mcp>. The MCP endpoint **https://mcp.profilfoto-ki.de/mcp** is live (`GET /health` returned HTTP 200 with `{"status":"ok"}` on 2026-11-24, 14:00 CET); the health check does not report a version, so no deployed version is claimed here (`package.json` and `server.json` are at 0.1.2). Delivery runs via the Netlify proxy site `mcp-profilfoto-proxy` in front of the Cloudflare Worker. The server is listed on Glama: <https://glama.ai/mcp/servers/trw123123/bewerbungsfoto-check-mcp> (checked 2026-11-19). It is published in the [official MCP Registry](https://registry.modelcontextprotocol.io/v0/servers?search=de.profilfoto-ki) as `de.profilfoto-ki/headshot-check` (version 0.1.2, status active; checked 2026-11-24). See [submission materials and remaining operator actions](submission/README.md).
 
 ## What it checks
 
